@@ -3,8 +3,18 @@ package main
 import (
 	"flag"
 	"net/http"
+	"reflect"
+	"time"
+
+	"github.com/kubermatic/kubermatic/api/pkg/virtualkubelet"
 
 	"github.com/golang/glog"
+
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kubeinformers "k8s.io/client-go/informers"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 const (
@@ -148,11 +158,53 @@ func main() {
 	listenAddress := flag.String("listen-address", ":8443", "address to listen on")
 	certFile := flag.String("certfile", "", "Path to the certfile")
 	keyFile := flag.String("keyfile", "", "Path to the keyfile")
+	kubeconfig := flag.String("kubeconfig", "", "Path to the kubeconfig, not required if running in-cluster")
+	masterURL := flag.String("master", "", "The address of the Kubernetes API server")
 	flag.Parse()
 
-	if *listenAddress == "" || *certFile == "" || *keyFile == "" {
-		glog.Fatalf(`All of "-listen-address", "-certfile", and "-keyfile" must be non-empty!`)
+	if *listenAddress == "" || *certFile == "" || *keyFile == "" || *kubeconfig == "" {
+		glog.Fatalf(`All of "-listen-address", "-certfile", "-keyfile" and "-kubeconfig" must be non-empty!`)
 	}
+
+	cfg, err := clientcmd.BuildConfigFromFlags(*masterURL, *kubeconfig)
+	if err != nil {
+		glog.Fatalf("error building kubeconfig: %v", err)
+	}
+
+	kubeClient, err := kubernetes.NewForConfig(cfg)
+	if err != nil {
+		glog.Fatalf("error building kubernetes clientset for kubeClient: %v", err)
+	}
+
+	stopChannel := make(chan struct{})
+
+	informerFactory := kubeinformers.NewFilteredSharedInformerFactory(kubeClient, time.Second*10, metav1.NamespaceSystem, nil)
+	informerFactory.Start(stopChannel)
+	glog.V(4).Infoln("Starting to sync...")
+	for _, syncsMap := range []map[reflect.Type]bool{informerFactory.WaitForCacheSync(stopChannel)} {
+		for key, synced := range syncsMap {
+			if !synced {
+				glog.Fatalf("unable to sync %s", key)
+			}
+		}
+	}
+	glog.V(4).Infoln("Finished syncing")
+
+	glog.V(4).Infoln("Creating controller...")
+	controller := virtualkubelet.New(kubeClient,
+		informerFactory.Core().V1().Pods().Informer(),
+		informerFactory.Core().V1().Pods().Lister())
+	glog.V(4).Infoln("Successfully created controller")
+	glog.V(4).Infoln("Starting controller...")
+	go func() {
+		if err := controller.Run(4, stopChannel); err != nil {
+			glog.Fatalf("Failed to start controller: %v", err)
+		}
+	}()
+	glog.V(4).Infoln("Successfully started controller")
+	virtualKubeletPod := corev1.Pod{}
+	virtualKubeletPod.Name = "virtual-kubelet-testpod"
+	controller.SetPod(&virtualKubeletPod)
 
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/pods", podHandler)
