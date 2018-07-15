@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: kubermatic-virtual-kubelet
+spec:
+  externalID: kubermatic-virtual-kubelet
+status:
+  addresses:
+  - address: j1900
+    type: Hostname
+  allocatable:
+    cpu: "0"
+    ephemeral-storage: "0"
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 0Ki
+    pods: "0"
+  capacity:
+    cpu: "0"
+    ephemeral-storage: 0Ki
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 0Ki
+    pods: "0"
+  conditions:
+  - lastHeartbeatTime: 2018-10-15T14:31:56Z
+    lastTransitionTime: 2018-10-08T11:44:31Z
+    message: kubelet is posting ready status
+    reason: KubeletReady
+    status: "True"
+    type: Ready
+  daemonEndpoints:
+    kubeletEndpoint:
+      Port: 8443
+  images: []

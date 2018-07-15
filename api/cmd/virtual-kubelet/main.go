@@ -204,6 +204,7 @@ func main() {
 	glog.V(4).Infoln("Successfully started controller")
 	virtualKubeletPod := corev1.Pod{}
 	virtualKubeletPod.Name = "virtual-kubelet-testpod"
+	virtualKubeletPod.Spec.Containers = []corev1.Container{{Name: "testcontainer", Image: "testimage"}}
 	controller.SetPod(&virtualKubeletPod)
 
 	http.HandleFunc("/", defaultHandler)

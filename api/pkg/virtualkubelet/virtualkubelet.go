@@ -134,6 +134,13 @@ func (c *Controller) createPod(key string) error {
 	// Ensure pod is scheduled on the virtual kubelet even if the client
 	// did not explicitly set that
 	c.managedPods[key].Spec.NodeName = NodeName
+
+	// Pod must have a "kubernetes.io/config.mirror" annotation
+	if c.managedPods[key].Annotations == nil {
+		c.managedPods[key].Annotations = map[string]string{}
+	}
+	c.managedPods[key].Annotations["kubernetes.io/config.mirror"] = key
+
 	createdPod, err := c.kubeClient.CoreV1().Pods(metav1.NamespaceSystem).Create(c.managedPods[key])
 	if err != nil {
 		glog.V(4).Infof("Failed to create pod %s: %v", c.managedPods[key].Name, err)
