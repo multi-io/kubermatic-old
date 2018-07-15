@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"net/http"
 	"reflect"
@@ -23,21 +24,8 @@ const (
   "items": [
     {
       "metadata": {
-        "name": "k8s-auth-injector-6c67dbdb88-mltk4",
-        "generateName": "k8s-auth-injector-6c67dbdb88-",
         "namespace": "kube-system",
-        "selfLink": "/api/v1/namespaces/kube-system/pods/k8s-auth-injector-6c67dbdb88-mltk4",
-        "uid": "2725c1db-7d37-11e8-b749-1c1b0d187168",
-        "resourceVersion": "988497",
-        "creationTimestamp": "2018-07-01T14:00:46Z",
-        "labels": {
-          "app": "k8s-auth-injector",
-          "pod-template-hash": "2723868644"
-        },
         "annotations": {
-          "cni.projectcalico.org/podIP": "10.244.0.52/32",
-          "kubernetes.io/config.seen": "2018-07-08T11:44:20.95467905Z",
-          "kubernetes.io/config.source": "api"
         },
         "ownerReferences": [
           {
@@ -51,27 +39,11 @@ const (
         ]
       },
       "spec": {
-        "volumes": [
-          {
-            "name": "default-token-77clf",
-            "secret": {
-              "secretName": "default-token-77clf",
-              "defaultMode": 420
-            }
-          }
-        ],
         "containers": [
           {
             "name": "k8s-auth-injector",
             "image": "alvaroaleman/k8s-auth-injector",
             "resources": {},
-            "volumeMounts": [
-              {
-                "name": "default-token-77clf",
-                "readOnly": true,
-                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
-              }
-            ],
             "terminationMessagePath": "/dev/termination-log",
             "terminationMessagePolicy": "File",
             "imagePullPolicy": "Always"
@@ -80,9 +52,7 @@ const (
         "restartPolicy": "Always",
         "terminationGracePeriodSeconds": 30,
         "dnsPolicy": "ClusterFirst",
-        "serviceAccountName": "default",
-        "serviceAccount": "default",
-        "nodeName": "j1900",
+        "nodeName": "kubermatic-virtual-kubelet",
         "securityContext": {},
         "schedulerName": "default-scheduler",
         "tolerations": [
@@ -176,6 +146,11 @@ func main() {
 		glog.Fatalf("error building kubernetes clientset for kubeClient: %v", err)
 	}
 
+	var podList corev1.PodList
+	if err := json.Unmarshal([]byte(podAnswer), &podList); err != nil {
+		glog.Fatalf("Failed to unmarshal static podlist: %v", err)
+	}
+
 	stopChannel := make(chan struct{})
 
 	informerFactory := kubeinformers.NewFilteredSharedInformerFactory(kubeClient, time.Second*10, metav1.NamespaceSystem, nil)
@@ -202,7 +177,7 @@ func main() {
 		}
 	}()
 	glog.V(4).Infoln("Successfully started controller")
-	virtualKubeletPod := corev1.Pod{}
+	virtualKubeletPod := podList.Items[0]
 	virtualKubeletPod.Name = "virtual-kubelet-testpod"
 	virtualKubeletPod.Spec.Containers = []corev1.Container{{Name: "testcontainer", Image: "testimage"}}
 	controller.SetPod(&virtualKubeletPod)
