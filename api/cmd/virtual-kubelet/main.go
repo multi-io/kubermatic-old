@@ -12,7 +12,6 @@ import (
 	"github.com/golang/glog"
 
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -153,7 +152,7 @@ func main() {
 
 	stopChannel := make(chan struct{})
 
-	informerFactory := kubeinformers.NewFilteredSharedInformerFactory(kubeClient, time.Second*10, metav1.NamespaceSystem, nil)
+	informerFactory := kubeinformers.NewSharedInformerFactory(kubeClient, time.Second*10)
 	informerFactory.Start(stopChannel)
 	glog.V(4).Infoln("Starting to sync...")
 	for _, syncsMap := range []map[reflect.Type]bool{informerFactory.WaitForCacheSync(stopChannel)} {
@@ -168,7 +167,8 @@ func main() {
 	glog.V(4).Infoln("Creating controller...")
 	controller := virtualkubelet.New(kubeClient,
 		informerFactory.Core().V1().Pods().Informer(),
-		informerFactory.Core().V1().Pods().Lister())
+		informerFactory.Core().V1().Pods().Lister(),
+		informerFactory.Core().V1().Nodes().Lister())
 	glog.V(4).Infoln("Successfully created controller")
 	glog.V(4).Infoln("Starting controller...")
 	go func() {

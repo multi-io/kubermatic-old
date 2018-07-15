@@ -25,6 +25,7 @@ const (
 type Controller struct {
 	kubeClient  kubernetes.Interface
 	podsLister  listerscorev1.PodLister
+	nodesLister listerscorev1.NodeLister
 	workqueue   workqueue.RateLimitingInterface
 	managedPods map[string]*corev1.Pod
 	mapLock     sync.Mutex
@@ -33,12 +34,14 @@ type Controller struct {
 func New(
 	kubeClient kubernetes.Interface,
 	podInformer cache.SharedIndexInformer,
-	podLister listerscorev1.PodLister) *Controller {
+	podLister listerscorev1.PodLister,
+	nodeLister listerscorev1.NodeLister) *Controller {
 
 	controller := &Controller{
 		kubeClient:  kubeClient,
 		workqueue:   workqueue.NewRateLimitingQueue(workqueue.NewItemExponentialFailureRateLimiter(1*time.Second, 5*time.Minute)),
 		podsLister:  podLister,
+		nodesLister: nodeLister,
 		managedPods: map[string]*corev1.Pod{},
 	}
 
@@ -72,6 +75,7 @@ func (c *Controller) handlePod(pod *corev1.Pod) {
 
 // Run starts the control loop
 func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
+	go c.keepNodeReady()
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
 
