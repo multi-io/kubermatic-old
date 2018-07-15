@@ -120,14 +120,29 @@ func (c *Controller) enqueuePod(obj interface{}) {
 }
 
 func (c *Controller) syncHandler(key string) error {
-	_, err := c.podsLister.Pods(metav1.NamespaceSystem).Get(key)
+	//listerPod, err := c.podsLister.Pods(metav1.NamespaceSystem).Get(key)
+	listerPod, err := c.kubeClient.CoreV1().Pods(metav1.NamespaceSystem).Get(key, metav1.GetOptions{})
 	if err != nil {
 		if kerrors.IsNotFound(err) {
 			return c.createPod(key)
 		}
 		return err
 	}
+
+	pod := listerPod.DeepCopy()
+	if pod.Status.Phase != corev1.PodRunning {
+		pod = setPodStatus(pod)
+		if _, err := c.kubeClient.CoreV1().Pods(metav1.NamespaceSystem).UpdateStatus(pod); err != nil {
+			glog.V(4).Infof("Failed to update pod status: %v", err)
+			return err
+		}
+	}
 	return nil
+}
+
+func timeNowPtr() *metav1.Time {
+	now := metav1.Now()
+	return &now
 }
 
 func (c *Controller) createPod(key string) error {
@@ -144,6 +159,8 @@ func (c *Controller) createPod(key string) error {
 		c.managedPods[key].Annotations = map[string]string{}
 	}
 	c.managedPods[key].Annotations["kubernetes.io/config.mirror"] = key
+	c.managedPods[key].Annotations["kubernetes.io/config.seen"] = metav1.Now().Format(time.RFC3339Nano)
+	c.managedPods[key] = setPodStatus(c.managedPods[key])
 
 	createdPod, err := c.kubeClient.CoreV1().Pods(metav1.NamespaceSystem).Create(c.managedPods[key])
 	if err != nil {
@@ -156,4 +173,23 @@ func (c *Controller) createPod(key string) error {
 	c.managedPods[key] = createdPod
 
 	return nil
+}
+
+func setPodStatus(pod *corev1.Pod) *corev1.Pod {
+	pod.Status.Phase = corev1.PodRunning
+	pod.Status.PodIP = "127.0.0.1"
+	pod.Status.StartTime = timeNowPtr()
+	pod.Status.ContainerStatuses = []corev1.ContainerStatus{}
+	for _, container := range pod.Spec.Containers {
+		newContainerStatus := corev1.ContainerStatus{
+			Name:    container.Name,
+			Image:   container.Image,
+			ImageID: container.Image,
+			Ready:   true,
+		}
+		pod.Status.ContainerStatuses = append(pod.Status.ContainerStatuses,
+			newContainerStatus)
+	}
+
+	return pod
 }

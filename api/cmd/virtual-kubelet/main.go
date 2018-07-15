@@ -184,7 +184,12 @@ func main() {
 
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/pods", podHandler)
+	http.HandleFunc("/containerLogs/kube-system/virtual-kubelet-testpod/testcontainer", dummyLogHandler)
 	glog.Fatalln(http.ListenAndServeTLS(*listenAddress, *certFile, *keyFile, nil))
+}
+
+func dummyLogHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello from virtual kubelet!"))
 }
 
 func podHandler(w http.ResponseWriter, r *http.Request) {
