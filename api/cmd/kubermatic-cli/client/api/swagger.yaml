@@ -1,0 +1,5265 @@
+---
+swagger: "2.0"
+info:
+  description: "Kubermatic API\n\nThis describes possible operations which can be\
+    \ made against the Kubermatic API."
+  version: "2.2.3"
+  title: "Kubermatic API."
+  termsOfService: "there are no TOS at this moment, use at your own risk we take no\
+    \ responsibility"
+host: "cloud.kubermatic.io"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /api/v1/azure/sizes:
+    get:
+      tags:
+      - "azure"
+      description: "Lists available VM sizes in an Azure region"
+      operationId: "listAzureSizes"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "AzureSizeList"
+          schema:
+            $ref: "#/definitions/AzureSizeList"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/dc:
+    get:
+      tags:
+      - "datacenter"
+      operationId: "listDatacenters"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "DatacenterList"
+          schema:
+            $ref: "#/definitions/DatacenterList"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/dc/{dc}:
+    get:
+      tags:
+      - "datacenter"
+      operationId: "getDatacenter"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      responses:
+        200:
+          description: "Datacenter"
+          schema:
+            $ref: "#/definitions/Datacenter"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/digitalocean/sizes:
+    get:
+      tags:
+      - "digitalocean"
+      description: "Lists sizes from digitalocean"
+      operationId: "listDigitaloceanSizes"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "DigitaloceanSizeList"
+          schema:
+            $ref: "#/definitions/DigitaloceanSizeList"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/healthz:
+    get:
+      description: "Health endpoint"
+      operationId: "healthz"
+      parameters: []
+      responses:
+        default:
+          description: "EmptyResponse is a empty response"
+  /api/v1/me:
+    get:
+      tags:
+      - "users"
+      summary: "Returns information about the current user."
+      operationId: "getCurrentUser"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "User"
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/openstack/networks:
+    get:
+      tags:
+      - "openstack"
+      description: "Lists networks from openstack"
+      operationId: "listOpenstackNetworks"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OpenstackNetwork"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OpenstackNetwork"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/openstack/securitygroups:
+    get:
+      tags:
+      - "openstack"
+      description: "Lists security groups from openstack"
+      operationId: "listOpenstackSecurityGroups"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OpenstackSecurityGroup"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OpenstackSecurityGroup"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/openstack/sizes:
+    get:
+      tags:
+      - "openstack"
+      description: "Lists sizes from openstack"
+      operationId: "listOpenstackSizes"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OpenstackSize"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OpenstackSize"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/openstack/subnets:
+    get:
+      tags:
+      - "openstack"
+      description: "Lists subnets from openstack"
+      operationId: "listOpenstackSubnets"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Username"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "Username"
+      - name: "Password"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "Password"
+      - name: "Domain"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "Domain"
+      - name: "Tenant"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "Tenant"
+      - name: "DatacenterName"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "DatacenterName"
+      - name: "NetworkID"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "NetworkID"
+      responses:
+        200:
+          description: "OpenstackSubnet"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OpenstackSubnet"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/openstack/tenants:
+    get:
+      tags:
+      - "openstack"
+      description: "Lists tenants from openstack"
+      operationId: "listOpenstackTenants"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OpenstackTenant"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OpenstackTenant"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/project/{project_id}/dc/{dc}/clusters/{cluster_name}:
+    delete:
+      tags:
+      - "project"
+      description: "Deletes the specified cluster"
+      operationId: "newDeleteCluster"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/project/{project_id}/dc/{dc}/clusters/{cluster_name}/health:
+    get:
+      tags:
+      - "project"
+      description: "Returns the cluster's component health status"
+      operationId: "newGetClusterHealth"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "ClusterHealth"
+          schema:
+            $ref: "#/definitions/ClusterHealth"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects:
+    get:
+      tags:
+      - "project"
+      summary: "Lists projects that an authenticated user is a member of."
+      operationId: "listProjects"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Project"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Project"
+        401:
+          description: "EmptyResponse is a empty response"
+        409:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "project"
+      summary: "Creates a brand new project."
+      description: "Note that this endpoint can be consumed by every authenticated\
+        \ user."
+      operationId: "createProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        201:
+          description: "Project"
+          schema:
+            $ref: "#/definitions/Project"
+        401:
+          description: "EmptyResponse is a empty response"
+        409:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}:
+    get:
+      tags:
+      - "project"
+      description: "Gets the project with the given ID"
+      operationId: "getProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "Name"
+        x-exportParamName: "ProjectId"
+      responses:
+        200:
+          description: "Project"
+          schema:
+            $ref: "#/definitions/Project"
+        401:
+          description: "EmptyResponse is a empty response"
+        409:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    put:
+      tags:
+      - "project"
+      description: "Updates the given project"
+      operationId: "updateProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "Name"
+        x-exportParamName: "ProjectId"
+      responses:
+        501:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    delete:
+      tags:
+      - "project"
+      summary: "Deletes the project with the given ID."
+      operationId: "deleteProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters:
+    get:
+      tags:
+      - "project"
+      summary: "Lists clusters for the specified project."
+      operationId: "newListClusters"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      responses:
+        200:
+          description: "ClusterList"
+          schema:
+            $ref: "#/definitions/ClusterList"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "project"
+      summary: "Creates a cluster for the given project."
+      operationId: "newCreateCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/Cluster"
+        x-exportParamName: "Body"
+      responses:
+        201:
+          description: "Cluster"
+          schema:
+            $ref: "#/definitions/Cluster"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}:
+    get:
+      tags:
+      - "project"
+      description: "Gets the cluster with the given name"
+      operationId: "newGetCluster"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "Cluster"
+          schema:
+            $ref: "#/definitions/Cluster"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    put:
+      tags:
+      - "project"
+      summary: "Updates the given cluster."
+      operationId: "newUpdateCluster"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/Cluster"
+        x-exportParamName: "Body"
+      responses:
+        200:
+          description: "Cluster"
+          schema:
+            $ref: "#/definitions/Cluster"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/kubeconfig:
+    get:
+      tags:
+      - "project"
+      summary: "Gets the kubeconfig for the specified cluster."
+      operationId: "newGetClusterKubeconfig"
+      produces:
+      - "application/yaml"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "Kubeconfig"
+          schema:
+            $ref: "#/definitions/Kubeconfig"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/metrics:
+    get:
+      tags:
+      - "project"
+      description: "Gets cluster metrics"
+      operationId: "clusterMetricsHandler"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "ClusterMetric"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ClusterMetric"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/nodes:
+    get:
+      tags:
+      - "project"
+      description: "Lists nodes that belong to the given cluster"
+      operationId: "newListNodesForCluster"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      - name: "hideInitialConditions"
+        in: "query"
+        required: false
+        type: "boolean"
+        x-go-name: "HideInitialConditions"
+        x-exportParamName: "HideInitialConditions"
+      responses:
+        200:
+          description: "Node"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Node"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "project"
+      description: "Creates a node that will belong to the given cluster"
+      operationId: "newCreateNodeForCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/Node"
+        x-exportParamName: "Body"
+      responses:
+        201:
+          description: "Node"
+          schema:
+            $ref: "#/definitions/Node"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/nodes/{node_name}:
+    get:
+      tags:
+      - "project"
+      summary: "Gets a node that is assigned to the given cluster."
+      operationId: "newGetNodeForCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      - name: "node_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "NodeName"
+        x-exportParamName: "NodeName"
+      - name: "hideInitialConditions"
+        in: "query"
+        required: false
+        type: "boolean"
+        x-go-name: "HideInitialConditions"
+        x-exportParamName: "HideInitialConditions"
+      responses:
+        200:
+          description: "Node"
+          schema:
+            $ref: "#/definitions/Node"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    delete:
+      tags:
+      - "project"
+      summary: "Deletes the given node that belongs to the cluster."
+      operationId: "newDeleteNodeForCluster"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      - name: "node_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "NodeName"
+        x-exportParamName: "NodeName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/sshkeys:
+    get:
+      tags:
+      - "project"
+      description: "Lists ssh keys that are assigned to the cluster\nThe returned\
+        \ collection is sorted by creation timestamp."
+      operationId: "newListSSHKeysAssignedToCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "NewSSHKey"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/NewSSHKey"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "project"
+      description: "Assigns an existing ssh key to the given cluster"
+      operationId: "newAssignSSHKeyToCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "KeyName"
+        in: "query"
+        required: false
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/sshkeys/{key_name}:
+    delete:
+      tags:
+      - "project"
+      description: "Unassignes an ssh key from the given cluster"
+      operationId: "newDetachSSHKeyFromCluster"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "key_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "KeyName"
+        x-exportParamName: "KeyName"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/token:
+    get:
+      tags:
+      - "project"
+      summary: "Returns the current admin token for the given cluster."
+      operationId: "getClusterAdminToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "ClusterAdminToken"
+          schema:
+            $ref: "#/definitions/ClusterAdminToken"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    put:
+      tags:
+      - "project"
+      summary: "Revokes the current admin token and returns a newly generated one."
+      operationId: "revokeClusterAdminToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "ClusterAdminToken"
+          schema:
+            $ref: "#/definitions/ClusterAdminToken"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/dc/{dc}/clusters/{cluster_name}/upgrades:
+    get:
+      tags:
+      - "project"
+      description: "Gets possible cluster upgrades"
+      operationId: "getClusterUpgrades"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "ClusterName"
+      responses:
+        200:
+          description: "MasterVersion"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MasterVersion"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/sshkeys:
+    get:
+      tags:
+      - "project"
+      summary: "Lists SSH Keys that belong to the given project."
+      description: "The returned collection is sorted by creation timestamp."
+      operationId: "newListSSHKeys"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      responses:
+        200:
+          description: "NewSSHKey"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/NewSSHKey"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "project"
+      summary: "Adds the given SSH key to the specified project."
+      operationId: "newCreateSSHKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      responses:
+        200:
+          description: "NewSSHKey"
+          schema:
+            $ref: "#/definitions/NewSSHKey"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/sshkeys/{key_name}:
+    delete:
+      tags:
+      - "project"
+      summary: "Removes the given SSH Key from the system."
+      operationId: "newDeleteSSHKey"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - name: "key_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "SSHKeyName"
+        x-exportParamName: "KeyName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/projects/{project_id}/users:
+    post:
+      tags:
+      - "users"
+      description: "Adds the given user to the given project"
+      operationId: "addUserToProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project_id"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ProjectID"
+        x-exportParamName: "ProjectId"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/User"
+        x-exportParamName: "Body"
+      responses:
+        201:
+          description: "User"
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          description: "EmptyResponse is a empty response"
+        403:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/ssh-keys:
+    get:
+      tags:
+      - "ssh-keys"
+      description: "Lists SSH keys from the user"
+      operationId: "listSSHKeys"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "SSHKey"
+          schema:
+            $ref: "#/definitions/SSHKey"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/ssh-keys/{meta_name}:
+    delete:
+      tags:
+      - "ssh-keys"
+      description: "Deletes a SSH keys for the user"
+      operationId: "deleteSSHKey"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "meta_name"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "MetaName"
+        x-exportParamName: "MetaName"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/sshkeys:
+    post:
+      tags:
+      - "sshkeys"
+      description: "Creates a SSH keys for the user"
+      operationId: "createSSHKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "SSHKey"
+          schema:
+            $ref: "#/definitions/SSHKey"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/versions:
+    get:
+      tags:
+      - "versions"
+      description: "Lists all versions which don't result in automatic updates"
+      operationId: "getMasterVersions"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "MasterVersion"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MasterVersion"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v1/vsphere/networks:
+    get:
+      tags:
+      - "vsphere"
+      description: "Lists networks from vsphere datacenter"
+      operationId: "listVSphereNetworks"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "VSphereNetwork"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/VSphereNetwork"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster:
+    get:
+      tags:
+      - "cluster"
+      operationId: "listClustersV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      responses:
+        200:
+          description: "ClusterListV1"
+          schema:
+            $ref: "#/definitions/ClusterListV1"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "cluster"
+      operationId: "createClusterV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/ClusterReqBody"
+        x-exportParamName: "Body"
+      responses:
+        201:
+          description: "ClusterV1"
+          schema:
+            $ref: "#/definitions/ClusterV1"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster/{cluster}:
+    get:
+      tags:
+      - "cluster"
+      operationId: "getClusterV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      responses:
+        200:
+          description: "ClusterV1"
+          schema:
+            $ref: "#/definitions/ClusterV1"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    put:
+      tags:
+      - "cluster"
+      operationId: "updateClusterV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/CreateClusterReqBody"
+        x-exportParamName: "Body"
+      responses:
+        200:
+          description: "ClusterV1"
+          schema:
+            $ref: "#/definitions/ClusterV1"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    delete:
+      tags:
+      - "cluster"
+      operationId: "deleteClusterV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster/{cluster}/kubeconfig:
+    get:
+      tags:
+      - "cluster"
+      operationId: "getClusterKubeconfigV3"
+      produces:
+      - "application/yaml"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      responses:
+        200:
+          description: "Kubeconfig"
+          schema:
+            $ref: "#/definitions/Kubeconfig"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster/{cluster}/node:
+    get:
+      tags:
+      - "cluster"
+      operationId: "nodesHandlerV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      - name: "hideInitialConditions"
+        in: "query"
+        required: false
+        type: "boolean"
+        x-go-name: "HideInitialConditions"
+        x-exportParamName: "HideInitialConditions"
+      responses:
+        200:
+          description: "NodeListV2"
+          schema:
+            $ref: "#/definitions/NodeListV2"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    post:
+      tags:
+      - "cluster"
+      operationId: "createNodesHandlerV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Body"
+        required: false
+        schema:
+          $ref: "#/definitions/CreateNodeReqBodyV3"
+        x-exportParamName: "Body"
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      responses:
+        201:
+          description: "NodeV2"
+          schema:
+            $ref: "#/definitions/NodeV2"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster/{cluster}/node/{node}:
+    get:
+      tags:
+      - "cluster"
+      operationId: "getNodeHandlerV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      - name: "node"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "NodeName"
+        x-exportParamName: "Node"
+      - name: "hideInitialConditions"
+        in: "query"
+        required: false
+        type: "boolean"
+        x-go-name: "HideInitialConditions"
+        x-exportParamName: "HideInitialConditions"
+      responses:
+        200:
+          description: "NodeV2"
+          schema:
+            $ref: "#/definitions/NodeV2"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+    delete:
+      tags:
+      - "cluster"
+      operationId: "deleteNodeHandlerV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      - name: "node"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "NodeName"
+        x-exportParamName: "Node"
+      - name: "hideInitialConditions"
+        in: "query"
+        required: false
+        type: "boolean"
+        x-go-name: "HideInitialConditions"
+        x-exportParamName: "HideInitialConditions"
+      responses:
+        200:
+          description: "EmptyResponse is a empty response"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+  /api/v3/dc/{dc}/cluster/{cluster}/upgrades:
+    get:
+      tags:
+      - "cluster"
+      operationId: "legacyGetPossibleClusterUpgradesV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dc"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "DC"
+        x-exportParamName: "Dc"
+      - name: "cluster"
+        in: "path"
+        required: true
+        type: "string"
+        x-go-name: "ClusterName"
+        x-exportParamName: "Cluster"
+      responses:
+        200:
+          description: "MasterVersion"
+          schema:
+            $ref: "#/definitions/MasterVersion"
+        default:
+          description: "ErrorResponse is the default representation of an error"
+          schema:
+            $ref: "#/definitions/ErrorDetails"
+definitions:
+  AWSCloudSpec:
+    type: "object"
+    properties:
+      accessKeyId:
+        type: "string"
+        x-go-name: "AccessKeyID"
+      availabilityZone:
+        type: "string"
+        x-go-name: "AvailabilityZone"
+      instanceProfileName:
+        type: "string"
+        x-go-name: "InstanceProfileName"
+      roleName:
+        type: "string"
+        x-go-name: "RoleName"
+      routeTableId:
+        type: "string"
+        x-go-name: "RouteTableID"
+      secretAccessKey:
+        type: "string"
+        x-go-name: "SecretAccessKey"
+      securityGroupID:
+        type: "string"
+        x-go-name: "SecurityGroupID"
+      subnetId:
+        type: "string"
+        x-go-name: "SubnetID"
+      vpcId:
+        type: "string"
+        x-go-name: "VPCID"
+    title: "AWSCloudSpec specifies access data to Amazon Web Services."
+    example:
+      accessKeyId: "accessKeyId"
+      secretAccessKey: "secretAccessKey"
+      securityGroupID: "securityGroupID"
+      subnetId: "subnetId"
+      instanceProfileName: "instanceProfileName"
+      routeTableId: "routeTableId"
+      vpcId: "vpcId"
+      roleName: "roleName"
+      availabilityZone: "availabilityZone"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  AWSDatacenterSpec:
+    type: "object"
+    properties:
+      region:
+        type: "string"
+        x-go-name: "Region"
+    title: "AWSDatacenterSpec specifies a data center of Amazon Web Services."
+    example:
+      region: "region"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  AWSNodeSpecV2:
+    type: "object"
+    required:
+    - "diskSize"
+    - "instanceType"
+    - "volumeType"
+    properties:
+      ami:
+        type: "string"
+        description: "ami to use. Will be defaulted to a ami for your selected operating\
+          \ system and region. Only set this when you know what you do."
+        x-go-name: "AMI"
+      diskSize:
+        type: "integer"
+        format: "int64"
+        description: "size of the volume in gb. Only one volume will be created"
+        x-go-name: "VolumeSize"
+      instanceType:
+        type: "string"
+        example: "t2.micro"
+        x-go-name: "InstanceType"
+      tags:
+        type: "object"
+        description: "additional instance tags"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Tags"
+      volumeType:
+        type: "string"
+        example: "gp2, io1, st1, sc1, standard"
+        x-go-name: "VolumeType"
+    description: "AWSNodeSpec aws specific node settings"
+    example:
+      volumeType: "gp2, io1, st1, sc1, standard"
+      diskSize: 0
+      instanceType: "t2.micro"
+      ami: "ami"
+      tags:
+        key: "tags"
+    x-go-name: "AWSNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  AuthInfo:
+    type: "object"
+    properties:
+      as:
+        type: "string"
+        description: "Impersonate is the username to imperonate.  The name matches\
+          \ the flag.\n+optional"
+        x-go-name: "Impersonate"
+      as-groups:
+        type: "array"
+        description: "ImpersonateGroups is the groups to imperonate.\n+optional"
+        items:
+          type: "string"
+        x-go-name: "ImpersonateGroups"
+      as-user-extra:
+        type: "object"
+        description: "ImpersonateUserExtra contains additional information for impersonated\
+          \ user.\n+optional"
+        additionalProperties:
+          type: "array"
+          items:
+            type: "string"
+        x-go-name: "ImpersonateUserExtra"
+      auth-provider:
+        $ref: "#/definitions/AuthProviderConfig"
+      client-certificate:
+        type: "string"
+        description: "ClientCertificate is the path to a client cert file for TLS.\n\
+          +optional"
+        x-go-name: "ClientCertificate"
+      client-certificate-data:
+        type: "array"
+        description: "ClientCertificateData contains PEM-encoded data from a client\
+          \ cert file for TLS. Overrides ClientCertificate\n+optional"
+        items:
+          type: "integer"
+          format: "uint8"
+        x-go-name: "ClientCertificateData"
+      client-key:
+        type: "string"
+        description: "ClientKey is the path to a client key file for TLS.\n+optional"
+        x-go-name: "ClientKey"
+      client-key-data:
+        type: "array"
+        description: "ClientKeyData contains PEM-encoded data from a client key file\
+          \ for TLS. Overrides ClientKey\n+optional"
+        items:
+          type: "integer"
+          format: "uint8"
+        x-go-name: "ClientKeyData"
+      exec:
+        $ref: "#/definitions/ExecConfig"
+      extensions:
+        type: "array"
+        description: "Extensions holds additional information. This is useful for\
+          \ extenders so that reads and writes don't clobber unknown fields\n+optional"
+        items:
+          $ref: "#/definitions/NamedExtension"
+        x-go-name: "Extensions"
+      password:
+        type: "string"
+        description: "Password is the password for basic authentication to the kubernetes\
+          \ cluster.\n+optional"
+        x-go-name: "Password"
+      token:
+        type: "string"
+        description: "Token is the bearer token for authentication to the kubernetes\
+          \ cluster.\n+optional"
+        x-go-name: "Token"
+      tokenFile:
+        type: "string"
+        description: "TokenFile is a pointer to a file that contains a bearer token\
+          \ (as described above).  If both Token and TokenFile are present, Token\
+          \ takes precedence.\n+optional"
+        x-go-name: "TokenFile"
+      username:
+        type: "string"
+        description: "Username is the username for basic authentication to the kubernetes\
+          \ cluster.\n+optional"
+        x-go-name: "Username"
+    title: "AuthInfo contains information that describes identity information.  This\
+      \ is use to tell the kubernetes cluster who you are."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  AuthProviderConfig:
+    type: "object"
+    properties:
+      config:
+        type: "object"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Config"
+      name:
+        type: "string"
+        x-go-name: "Name"
+    title: "AuthProviderConfig holds the configuration for a specified auth provider."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  AzureCloudSpec:
+    type: "object"
+    properties:
+      availabilitySet:
+        type: "string"
+        x-go-name: "AvailabilitySet"
+      clientID:
+        type: "string"
+        x-go-name: "ClientID"
+      clientSecret:
+        type: "string"
+        x-go-name: "ClientSecret"
+      resourceGroup:
+        type: "string"
+        x-go-name: "ResourceGroup"
+      routeTable:
+        type: "string"
+        x-go-name: "RouteTableName"
+      securityGroup:
+        type: "string"
+        x-go-name: "SecurityGroup"
+      subnet:
+        type: "string"
+        x-go-name: "SubnetName"
+      subscriptionID:
+        type: "string"
+        x-go-name: "SubscriptionID"
+      tenantID:
+        type: "string"
+        x-go-name: "TenantID"
+      vnet:
+        type: "string"
+        x-go-name: "VNetName"
+    title: "AzureCloudSpec specifies acceess credentials to Azure cloud."
+    example:
+      vnet: "vnet"
+      availabilitySet: "availabilitySet"
+      resourceGroup: "resourceGroup"
+      subnet: "subnet"
+      clientID: "clientID"
+      routeTable: "routeTable"
+      tenantID: "tenantID"
+      clientSecret: "clientSecret"
+      securityGroup: "securityGroup"
+      subscriptionID: "subscriptionID"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  AzureDatacenterSpec:
+    type: "object"
+    properties:
+      location:
+        type: "string"
+        x-go-name: "Location"
+    title: "AzureDatacenterSpec specifies a datacenter of Azure."
+    example:
+      location: "location"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  AzureNodeSpecV1:
+    type: "object"
+    required:
+    - "size"
+    properties:
+      assignPublicIP:
+        type: "boolean"
+        description: "should the machine have a publicly accessible IP address"
+        x-go-name: "AssignPublicIP"
+      size:
+        type: "string"
+        description: "VM size"
+        x-go-name: "Size"
+      tags:
+        type: "object"
+        description: "Additional metadata to set"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Tags"
+    description: "AzureNodeSpec describes settings for an Azure node"
+    example:
+      size: "size"
+      assignPublicIP: true
+      tags:
+        key: "tags"
+    x-go-name: "AzureNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  AzureSize:
+    type: "object"
+    properties:
+      maxDataDiskCount:
+        type: "integer"
+        format: "int32"
+        x-go-name: "MaxDataDiskCount"
+      memoryInMB:
+        type: "integer"
+        format: "int32"
+        x-go-name: "MemoryInMB"
+      name:
+        type: "string"
+        x-go-name: "Name"
+      numberOfCores:
+        type: "integer"
+        format: "int32"
+        x-go-name: "NumberOfCores"
+      osDiskSizeInMB:
+        type: "integer"
+        format: "int32"
+        x-go-name: "OsDiskSizeInMB"
+      resourceDiskSizeInMB:
+        type: "integer"
+        format: "int32"
+        x-go-name: "ResourceDiskSizeInMB"
+    title: "AzureSize is the object representing Azure VM sizes."
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  AzureSizeList:
+    title: "AzureSizeList represents an array of Azure VM sizes."
+    type: "array"
+    items:
+      $ref: "#/definitions/AzureSize"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  BringYourOwnCloudSpec:
+    type: "object"
+    title: "BringYourOwnCloudSpec specifies access data for a bring your own cluster."
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  BringYourOwnDatacenterSpec:
+    type: "object"
+    title: "BringYourOwnDatacenterSpec specifies a data center with bring-your-own\
+      \ nodes."
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  Bytes:
+    type: "array"
+    items:
+      type: "integer"
+      format: "uint8"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  CauseType:
+    type: "string"
+    description: "CauseType is a machine readable value providing more detail about\
+      \ what\noccurred in a status response. An operation may have multiple causes\
+      \ for a\nstatus (whether Failure or Success)."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  CentOSSpec:
+    type: "object"
+    properties:
+      distUpgradeOnBoot:
+        type: "boolean"
+        description: "do a dist-upgrade on boot and reboot it required afterwards"
+        x-go-name: "DistUpgradeOnBoot"
+    description: "CentOSSpec contains CentOS specific settings"
+    example:
+      distUpgradeOnBoot: true
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  CloudSpec:
+    type: "object"
+    properties:
+      aws:
+        $ref: "#/definitions/AWSCloudSpec"
+      azure:
+        $ref: "#/definitions/AzureCloudSpec"
+      bringyourown:
+        $ref: "#/definitions/BringYourOwnCloudSpec"
+      dc:
+        type: "string"
+        description: "DatacenterName where the users 'cloud' lives in."
+        x-go-name: "DatacenterName"
+      digitalocean:
+        $ref: "#/definitions/DigitaloceanCloudSpec"
+      fake:
+        $ref: "#/definitions/FakeCloudSpec"
+      hetzner:
+        $ref: "#/definitions/HetznerCloudSpec"
+      openstack:
+        $ref: "#/definitions/OpenstackCloudSpec"
+      vsphere:
+        $ref: "#/definitions/VSphereCloudSpec"
+    title: "CloudSpec mutually stores access data to a cloud provider."
+    example:
+      vsphere:
+        password: "password"
+        vmNetName: "vmNetName"
+        infraManagementUser:
+          password: "password"
+          username: "username"
+        username: "username"
+      hetzner:
+        token: "token"
+      bringyourown: {}
+      fake:
+        token: "token"
+      openstack:
+        subnetID: "subnetID"
+        password: "password"
+        routerID: "routerID"
+        domain: "domain"
+        floatingIpPool: "floatingIpPool"
+        securityGroups: "securityGroups"
+        tenant: "tenant"
+        network: "network"
+        username: "username"
+      aws:
+        accessKeyId: "accessKeyId"
+        secretAccessKey: "secretAccessKey"
+        securityGroupID: "securityGroupID"
+        subnetId: "subnetId"
+        instanceProfileName: "instanceProfileName"
+        routeTableId: "routeTableId"
+        vpcId: "vpcId"
+        roleName: "roleName"
+        availabilityZone: "availabilityZone"
+      digitalocean:
+        token: "token"
+      azure:
+        vnet: "vnet"
+        availabilitySet: "availabilitySet"
+        resourceGroup: "resourceGroup"
+        subnet: "subnet"
+        clientID: "clientID"
+        routeTable: "routeTable"
+        tenantID: "tenantID"
+        clientSecret: "clientSecret"
+        securityGroup: "securityGroup"
+        subscriptionID: "subscriptionID"
+      dc: "dc"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  Cluster:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+      spec:
+        $ref: "#/definitions/NewClusterSpec"
+      status:
+        $ref: "#/definitions/NewClusterStatus"
+    description: "NewCluster defines the cluster resource"
+    example:
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      spec:
+        cloud:
+          vsphere:
+            password: "password"
+            vmNetName: "vmNetName"
+            infraManagementUser:
+              password: "password"
+              username: "username"
+            username: "username"
+          hetzner:
+            token: "token"
+          bringyourown: {}
+          fake:
+            token: "token"
+          openstack:
+            subnetID: "subnetID"
+            password: "password"
+            routerID: "routerID"
+            domain: "domain"
+            floatingIpPool: "floatingIpPool"
+            securityGroups: "securityGroups"
+            tenant: "tenant"
+            network: "network"
+            username: "username"
+          aws:
+            accessKeyId: "accessKeyId"
+            secretAccessKey: "secretAccessKey"
+            securityGroupID: "securityGroupID"
+            subnetId: "subnetId"
+            instanceProfileName: "instanceProfileName"
+            routeTableId: "routeTableId"
+            vpcId: "vpcId"
+            roleName: "roleName"
+            availabilityZone: "availabilityZone"
+          digitalocean:
+            token: "token"
+          azure:
+            vnet: "vnet"
+            availabilitySet: "availabilitySet"
+            resourceGroup: "resourceGroup"
+            subnet: "subnet"
+            clientID: "clientID"
+            routeTable: "routeTable"
+            tenantID: "tenantID"
+            clientSecret: "clientSecret"
+            securityGroup: "securityGroup"
+            subscriptionID: "subscriptionID"
+          dc: "dc"
+        version: "version"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      status:
+        version: "version"
+        url: "url"
+    x-go-name: "NewCluster"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterAddress:
+    type: "object"
+    properties:
+      adminToken:
+        type: "string"
+        description: "AdminToken is the token for the kubeconfig, the user can download"
+        x-go-name: "AdminToken"
+      externalName:
+        type: "string"
+        description: "ExternalName is the DNS name for this cluster"
+        x-go-name: "ExternalName"
+      ip:
+        type: "string"
+        description: "IP is the external IP under which the apiserver is available"
+        x-go-name: "IP"
+      url:
+        type: "string"
+        description: "URL under which the Apiserver is available"
+        x-go-name: "URL"
+    title: "ClusterAddress stores access and address information of a cluster."
+    example:
+      externalName: "externalName"
+      ip: "ip"
+      adminToken: "adminToken"
+      url: "url"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterAdminToken:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        x-go-name: "Token"
+    description: "ClusterAdminToken represents a cluster's admin token"
+    example:
+      token: "token"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterHealth:
+    type: "object"
+    properties:
+      apiserver:
+        type: "boolean"
+        x-go-name: "Apiserver"
+      controller:
+        type: "boolean"
+        x-go-name: "Controller"
+      etcd:
+        type: "boolean"
+        x-go-name: "Etcd"
+      machineController:
+        type: "boolean"
+        x-go-name: "MachineController"
+      scheduler:
+        type: "boolean"
+        x-go-name: "Scheduler"
+    title: "NewClusterHealth stores health information about the cluster's components."
+    example:
+      scheduler: true
+      controller: true
+      machineController: true
+      apiserver: true
+      etcd: true
+    x-go-name: "NewClusterHealth"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterList:
+    type: "array"
+    description: "NewClusterList represents a list of clusters"
+    items:
+      $ref: "#/definitions/Cluster"
+    x-go-name: "NewClusterList"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterListV1:
+    type: "array"
+    description: "ClusterList represents a list of clusters"
+    items:
+      $ref: "#/definitions/ClusterV1"
+    x-go-name: "ClusterList"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterMetric:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        x-go-name: "Name"
+      values:
+        type: "array"
+        items:
+          type: "number"
+          format: "double"
+        x-go-name: "Values"
+    description: "ClusterMetric defines a metric for the given cluster"
+    example:
+      values:
+      - 0.8008281904610115
+      - 0.8008281904610115
+      name: "name"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ClusterNetworkingConfig:
+    type: "object"
+    properties:
+      dnsDomain:
+        type: "string"
+        description: "Domain name for services."
+        x-go-name: "DNSDomain"
+      pods:
+        $ref: "#/definitions/NetworkRanges"
+      services:
+        $ref: "#/definitions/NetworkRanges"
+    description: "ClusterNetworkingConfig specifies the different networking\nparameters\
+      \ for a cluster."
+    example:
+      pods:
+        cidrBlocks:
+        - "cidrBlocks"
+        - "cidrBlocks"
+      services:
+        cidrBlocks:
+        - "cidrBlocks"
+        - "cidrBlocks"
+      dnsDomain: "dnsDomain"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterPhase:
+    type: "string"
+    title: "ClusterPhase is the life cycle phase of a cluster."
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterReqBody:
+    type: "object"
+    properties:
+      cluster:
+        $ref: "#/definitions/ClusterSpec"
+      sshKeys:
+        type: "array"
+        items:
+          type: "string"
+        x-go-name: "SSHKeys"
+    description: "ClusterReqBody represents the body of a new cluster request"
+    example:
+      cluster:
+        cloud:
+          vsphere:
+            password: "password"
+            vmNetName: "vmNetName"
+            infraManagementUser:
+              password: "password"
+              username: "username"
+            username: "username"
+          hetzner:
+            token: "token"
+          bringyourown: {}
+          fake:
+            token: "token"
+          openstack:
+            subnetID: "subnetID"
+            password: "password"
+            routerID: "routerID"
+            domain: "domain"
+            floatingIpPool: "floatingIpPool"
+            securityGroups: "securityGroups"
+            tenant: "tenant"
+            network: "network"
+            username: "username"
+          aws:
+            accessKeyId: "accessKeyId"
+            secretAccessKey: "secretAccessKey"
+            securityGroupID: "securityGroupID"
+            subnetId: "subnetId"
+            instanceProfileName: "instanceProfileName"
+            routeTableId: "routeTableId"
+            vpcId: "vpcId"
+            roleName: "roleName"
+            availabilityZone: "availabilityZone"
+          digitalocean:
+            token: "token"
+          azure:
+            vnet: "vnet"
+            availabilitySet: "availabilitySet"
+            resourceGroup: "resourceGroup"
+            subnet: "subnet"
+            clientID: "clientID"
+            routeTable: "routeTable"
+            tenantID: "tenantID"
+            clientSecret: "clientSecret"
+            securityGroup: "securityGroup"
+            subscriptionID: "subscriptionID"
+          dc: "dc"
+        pauseReason: "pauseReason"
+        componentsOverride:
+          scheduler:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          controllerManager:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          apiserver:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          etcd:
+            resources:
+              requests: null
+              limits: {}
+        masterVersion: "masterVersion"
+        clusterNetwork:
+          pods:
+            cidrBlocks:
+            - "cidrBlocks"
+            - "cidrBlocks"
+          services:
+            cidrBlocks:
+            - "cidrBlocks"
+            - "cidrBlocks"
+          dnsDomain: "dnsDomain"
+        humanReadableName: "humanReadableName"
+        version: "version"
+        pause: true
+      sshKeys:
+      - "sshKeys"
+      - "sshKeys"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/handler"
+  ClusterSpec:
+    type: "object"
+    properties:
+      cloud:
+        $ref: "#/definitions/CloudSpec"
+      clusterNetwork:
+        $ref: "#/definitions/ClusterNetworkingConfig"
+      componentsOverride:
+        $ref: "#/definitions/ComponentSettings"
+      humanReadableName:
+        type: "string"
+        description: "HumanReadableName is the cluster name provided by the user"
+        x-go-name: "HumanReadableName"
+      masterVersion:
+        type: "string"
+        description: "MasterVersion is Deprecated"
+        x-go-name: "MasterVersion"
+      pause:
+        type: "boolean"
+        description: "Pause tells that this cluster is currently not managed by the\
+          \ controller.\nIt indicates that the user needs to do some action to resolve\
+          \ the pause."
+        x-go-name: "Pause"
+      pauseReason:
+        type: "string"
+        description: "PauseReason is the reason why the cluster is no being managed."
+        x-go-name: "PauseReason"
+      version:
+        type: "string"
+        description: "Version defines the wanted version of the control plane"
+        x-go-name: "Version"
+    title: "ClusterSpec specifies the data for a new cluster."
+    example:
+      cloud:
+        vsphere:
+          password: "password"
+          vmNetName: "vmNetName"
+          infraManagementUser:
+            password: "password"
+            username: "username"
+          username: "username"
+        hetzner:
+          token: "token"
+        bringyourown: {}
+        fake:
+          token: "token"
+        openstack:
+          subnetID: "subnetID"
+          password: "password"
+          routerID: "routerID"
+          domain: "domain"
+          floatingIpPool: "floatingIpPool"
+          securityGroups: "securityGroups"
+          tenant: "tenant"
+          network: "network"
+          username: "username"
+        aws:
+          accessKeyId: "accessKeyId"
+          secretAccessKey: "secretAccessKey"
+          securityGroupID: "securityGroupID"
+          subnetId: "subnetId"
+          instanceProfileName: "instanceProfileName"
+          routeTableId: "routeTableId"
+          vpcId: "vpcId"
+          roleName: "roleName"
+          availabilityZone: "availabilityZone"
+        digitalocean:
+          token: "token"
+        azure:
+          vnet: "vnet"
+          availabilitySet: "availabilitySet"
+          resourceGroup: "resourceGroup"
+          subnet: "subnet"
+          clientID: "clientID"
+          routeTable: "routeTable"
+          tenantID: "tenantID"
+          clientSecret: "clientSecret"
+          securityGroup: "securityGroup"
+          subscriptionID: "subscriptionID"
+        dc: "dc"
+      pauseReason: "pauseReason"
+      componentsOverride:
+        scheduler:
+          replicas: 5
+          resources:
+            requests: null
+            limits: {}
+        controllerManager:
+          replicas: 5
+          resources:
+            requests: null
+            limits: {}
+        apiserver:
+          replicas: 5
+          resources:
+            requests: null
+            limits: {}
+        etcd:
+          resources:
+            requests: null
+            limits: {}
+      masterVersion: "masterVersion"
+      clusterNetwork:
+        pods:
+          cidrBlocks:
+          - "cidrBlocks"
+          - "cidrBlocks"
+        services:
+          cidrBlocks:
+          - "cidrBlocks"
+          - "cidrBlocks"
+        dnsDomain: "dnsDomain"
+      humanReadableName: "humanReadableName"
+      version: "version"
+      pause: true
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterStatus:
+    type: "object"
+    properties:
+      apiserverCert:
+        $ref: "#/definitions/KeyCert"
+      apiserverSshKey:
+        $ref: "#/definitions/RSAKeys"
+      errorMessage:
+        type: "string"
+        description: "ErrorMessage contains a defauled error message in case the controller\
+          \ encountered an error. Will be reset if the error was resolved"
+        x-go-name: "ErrorMessage"
+      errorReason:
+        $ref: "#/definitions/ClusterStatusError"
+      health:
+        $ref: "#/definitions/ClusterHealth"
+      kubeletCert:
+        $ref: "#/definitions/KeyCert"
+      lastUpdated:
+        $ref: "#/definitions/Time"
+      namespaceName:
+        type: "string"
+        description: "NamespaceName defines the namespace the control plane of this\
+          \ cluster is deployed in"
+        x-go-name: "NamespaceName"
+      phase:
+        $ref: "#/definitions/ClusterPhase"
+      rootCA:
+        $ref: "#/definitions/KeyCert"
+      serviceAccountKey:
+        $ref: "#/definitions/Bytes"
+      userEmail:
+        type: "string"
+        description: "UserEmail contains the email of the owner of this cluster"
+        x-go-name: "UserEmail"
+      userName:
+        type: "string"
+        description: "UserName contains the name of the owner of this cluster"
+        x-go-name: "UserName"
+    title: "ClusterStatus stores status information about a cluster."
+    example:
+      apiserverSshKey:
+        privateKey: ""
+        publicKey: ""
+      phase: {}
+      serviceAccountKey: ""
+      errorMessage: "errorMessage"
+      health:
+        scheduler: true
+        controller: true
+        machineController: true
+        apiserver: true
+        etcd: true
+      apiserverCert:
+        cert: ""
+        key: ""
+      userName: "userName"
+      lastUpdated: null
+      errorReason: {}
+      rootCA:
+        cert: ""
+        key: ""
+      userEmail: "userEmail"
+      namespaceName: "namespaceName"
+      kubeletCert:
+        cert: ""
+        key: ""
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterStatusError:
+    type: "string"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ClusterV1:
+    type: "object"
+    properties:
+      address:
+        $ref: "#/definitions/ClusterAddress"
+      annotations:
+        type: "object"
+        description: "Annotations is an unstructured key value map stored with a resource\
+          \ that may be\nset by external tools to store and retrieve arbitrary metadata.\
+          \ They are not\nqueryable and should be preserved when modifying objects.\n\
+          More info: http://kubernetes.io/docs/user-guide/annotations\n+optional"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Annotations"
+      apiVersion:
+        type: "string"
+        description: "APIVersion defines the versioned schema of this representation\
+          \ of an object.\nServers should convert recognized schemas to the latest\
+          \ internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources\n\
+          +optional"
+        x-go-name: "APIVersion"
+      clusterName:
+        type: "string"
+        description: "The name of the cluster which the object belongs to.\nThis is\
+          \ used to distinguish resources with same name and namespace in different\
+          \ clusters.\nThis field is not set anywhere right now and apiserver is going\
+          \ to ignore it if set in create or update request.\n+optional"
+        x-go-name: "ClusterName"
+      creationTimestamp:
+        $ref: "#/definitions/Time"
+      deletionGracePeriodSeconds:
+        type: "integer"
+        format: "int64"
+        description: "Number of seconds allowed for this object to gracefully terminate\
+          \ before\nit will be removed from the system. Only set when deletionTimestamp\
+          \ is also set.\nMay only be shortened.\nRead-only.\n+optional"
+        x-go-name: "DeletionGracePeriodSeconds"
+      deletionTimestamp:
+        $ref: "#/definitions/Time"
+      finalizers:
+        type: "array"
+        description: "Must be empty before the object is deleted from the registry.\
+          \ Each entry\nis an identifier for the responsible component that will remove\
+          \ the entry\nfrom the list. If the deletionTimestamp of the object is non-nil,\
+          \ entries\nin this list can only be removed.\n+optional\n+patchStrategy=merge"
+        items:
+          type: "string"
+        x-go-name: "Finalizers"
+      generateName:
+        type: "string"
+        description: "GenerateName is an optional prefix, used by the server, to generate\
+          \ a unique\nname ONLY IF the Name field has not been provided.\nIf this\
+          \ field is used, the name returned to the client will be different\nthan\
+          \ the name passed. This value will also be combined with a unique suffix.\n\
+          The provided value has the same validation rules as the Name field,\nand\
+          \ may be truncated by the length of the suffix required to make the value\n\
+          unique on the server.\n\nIf this field is specified and the generated name\
+          \ exists, the server will\nNOT return a 409 - instead, it will either return\
+          \ 201 Created or 500 with Reason\nServerTimeout indicating a unique name\
+          \ could not be found in the time allotted, and the client\nshould retry\
+          \ (optionally after the time indicated in the Retry-After header).\n\nApplied\
+          \ only if Name is not specified.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#idempotency\n\
+          +optional"
+        x-go-name: "GenerateName"
+      generation:
+        type: "integer"
+        format: "int64"
+        description: "A sequence number representing a specific generation of the\
+          \ desired state.\nPopulated by the system. Read-only.\n+optional"
+        x-go-name: "Generation"
+      initializers:
+        $ref: "#/definitions/Initializers"
+      kind:
+        type: "string"
+        description: "Kind is a string value representing the REST resource this object\
+          \ represents.\nServers may infer this from the endpoint the client submits\
+          \ requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds\n\
+          +optional"
+        x-go-name: "Kind"
+      labels:
+        type: "object"
+        description: "Map of string keys and values that can be used to organize and\
+          \ categorize\n(scope and select) objects. May match selectors of replication\
+          \ controllers\nand services.\nMore info: http://kubernetes.io/docs/user-guide/labels\n\
+          +optional"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Labels"
+      name:
+        type: "string"
+        description: "Name must be unique within a namespace. Is required when creating\
+          \ resources, although\nsome resources may allow a client to request the\
+          \ generation of an appropriate name\nautomatically. Name is primarily intended\
+          \ for creation idempotence and configuration\ndefinition.\nCannot be updated.\n\
+          More info: http://kubernetes.io/docs/user-guide/identifiers#names\n+optional"
+        x-go-name: "Name"
+      namespace:
+        type: "string"
+        description: "Namespace defines the space within each name must be unique.\
+          \ An empty namespace is\nequivalent to the \"default\" namespace, but \"\
+          default\" is the canonical representation.\nNot all objects are required\
+          \ to be scoped to a namespace - the value of this field for\nthose objects\
+          \ will be empty.\n\nMust be a DNS_LABEL.\nCannot be updated.\nMore info:\
+          \ http://kubernetes.io/docs/user-guide/namespaces\n+optional"
+        x-go-name: "Namespace"
+      ownerReferences:
+        type: "array"
+        description: "List of objects depended by this object. If ALL objects in the\
+          \ list have\nbeen deleted, this object will be garbage collected. If this\
+          \ object is managed by a controller,\nthen an entry in this list will point\
+          \ to this controller, with the controller field set to true.\nThere cannot\
+          \ be more than one managing controller.\n+optional\n+patchMergeKey=uid\n\
+          +patchStrategy=merge"
+        items:
+          $ref: "#/definitions/OwnerReference"
+        x-go-name: "OwnerReferences"
+      resourceVersion:
+        type: "string"
+        description: "An opaque value that represents the internal version of this\
+          \ object that can\nbe used by clients to determine when objects have changed.\
+          \ May be used for optimistic\nconcurrency, change detection, and the watch\
+          \ operation on a resource or set of resources.\nClients must treat these\
+          \ values as opaque and passed unmodified back to the server.\nThey may only\
+          \ be valid for a particular resource or set of resources.\n\nPopulated by\
+          \ the system.\nRead-only.\nValue must be treated as opaque by clients and\
+          \ .\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-control-and-consistency\n\
+          +optional"
+        x-go-name: "ResourceVersion"
+      selfLink:
+        type: "string"
+        description: "SelfLink is a URL representing this object.\nPopulated by the\
+          \ system.\nRead-only.\n+optional"
+        x-go-name: "SelfLink"
+      spec:
+        $ref: "#/definitions/ClusterSpec"
+      status:
+        $ref: "#/definitions/ClusterStatus"
+      uid:
+        $ref: "#/definitions/UID"
+    title: "Cluster is the object representing a cluster."
+    example:
+      generation: 6
+      finalizers:
+      - "finalizers"
+      - "finalizers"
+      address:
+        externalName: "externalName"
+        ip: "ip"
+        adminToken: "adminToken"
+        url: "url"
+      kind: "kind"
+      resourceVersion: "resourceVersion"
+      annotations:
+        key: "annotations"
+      generateName: "generateName"
+      spec:
+        cloud:
+          vsphere:
+            password: "password"
+            vmNetName: "vmNetName"
+            infraManagementUser:
+              password: "password"
+              username: "username"
+            username: "username"
+          hetzner:
+            token: "token"
+          bringyourown: {}
+          fake:
+            token: "token"
+          openstack:
+            subnetID: "subnetID"
+            password: "password"
+            routerID: "routerID"
+            domain: "domain"
+            floatingIpPool: "floatingIpPool"
+            securityGroups: "securityGroups"
+            tenant: "tenant"
+            network: "network"
+            username: "username"
+          aws:
+            accessKeyId: "accessKeyId"
+            secretAccessKey: "secretAccessKey"
+            securityGroupID: "securityGroupID"
+            subnetId: "subnetId"
+            instanceProfileName: "instanceProfileName"
+            routeTableId: "routeTableId"
+            vpcId: "vpcId"
+            roleName: "roleName"
+            availabilityZone: "availabilityZone"
+          digitalocean:
+            token: "token"
+          azure:
+            vnet: "vnet"
+            availabilitySet: "availabilitySet"
+            resourceGroup: "resourceGroup"
+            subnet: "subnet"
+            clientID: "clientID"
+            routeTable: "routeTable"
+            tenantID: "tenantID"
+            clientSecret: "clientSecret"
+            securityGroup: "securityGroup"
+            subscriptionID: "subscriptionID"
+          dc: "dc"
+        pauseReason: "pauseReason"
+        componentsOverride:
+          scheduler:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          controllerManager:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          apiserver:
+            replicas: 5
+            resources:
+              requests: null
+              limits: {}
+          etcd:
+            resources:
+              requests: null
+              limits: {}
+        masterVersion: "masterVersion"
+        clusterNetwork:
+          pods:
+            cidrBlocks:
+            - "cidrBlocks"
+            - "cidrBlocks"
+          services:
+            cidrBlocks:
+            - "cidrBlocks"
+            - "cidrBlocks"
+          dnsDomain: "dnsDomain"
+        humanReadableName: "humanReadableName"
+        version: "version"
+        pause: true
+      deletionTimestamp: null
+      labels:
+        key: "labels"
+      ownerReferences:
+      - uid: null
+        controller: true
+        apiVersion: "apiVersion"
+        kind: "kind"
+        name: "name"
+        blockOwnerDeletion: true
+      - uid: null
+        controller: true
+        apiVersion: "apiVersion"
+        kind: "kind"
+        name: "name"
+        blockOwnerDeletion: true
+      selfLink: "selfLink"
+      deletionGracePeriodSeconds: 0
+      uid: null
+      apiVersion: "apiVersion"
+      initializers:
+        result:
+          reason: {}
+          apiVersion: "apiVersion"
+          code: 1
+          continue: "continue"
+          kind: "kind"
+          resourceVersion: "resourceVersion"
+          details:
+            uid: {}
+            kind: "kind"
+            causes:
+            - reason: {}
+              field: "field"
+              message: "message"
+            - reason: {}
+              field: "field"
+              message: "message"
+            retryAfterSeconds: 5
+            name: "name"
+            group: "group"
+          message: "message"
+          selfLink: "selfLink"
+          status: "status"
+        pending:
+        - name: "name"
+        - name: "name"
+      clusterName: "clusterName"
+      creationTimestamp: {}
+      name: "name"
+      namespace: "namespace"
+      status:
+        apiserverSshKey:
+          privateKey: ""
+          publicKey: ""
+        phase: {}
+        serviceAccountKey: ""
+        errorMessage: "errorMessage"
+        health:
+          scheduler: true
+          controller: true
+          machineController: true
+          apiserver: true
+          etcd: true
+        apiserverCert:
+          cert: ""
+          key: ""
+        userName: "userName"
+        lastUpdated: null
+        errorReason: {}
+        rootCA:
+          cert: ""
+          key: ""
+        userEmail: "userEmail"
+        namespaceName: "namespaceName"
+        kubeletCert:
+          cert: ""
+          key: ""
+    x-go-name: "Cluster"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ComponentSettings:
+    type: "object"
+    properties:
+      apiserver:
+        $ref: "#/definitions/DeploymentSettings"
+      controllerManager:
+        $ref: "#/definitions/DeploymentSettings"
+      etcd:
+        $ref: "#/definitions/EtcdSettings"
+      scheduler:
+        $ref: "#/definitions/DeploymentSettings"
+    example:
+      scheduler:
+        replicas: 5
+        resources:
+          requests: null
+          limits: {}
+      controllerManager:
+        replicas: 5
+        resources:
+          requests: null
+          limits: {}
+      apiserver:
+        replicas: 5
+        resources:
+          requests: null
+          limits: {}
+      etcd:
+        resources:
+          requests: null
+          limits: {}
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ContainerLinuxSpecV2:
+    type: "object"
+    properties:
+      disableAutoUpdate:
+        type: "boolean"
+        description: "disable container linux auto-update feature"
+        x-go-name: "DisableAutoUpdate"
+    description: "ContainerLinuxSpec ubuntu linux specific settings"
+    example:
+      disableAutoUpdate: true
+    x-go-name: "ContainerLinuxSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  Context:
+    type: "object"
+    properties:
+      cluster:
+        type: "string"
+        description: "Cluster is the name of the cluster for this context"
+        x-go-name: "Cluster"
+      extensions:
+        type: "array"
+        description: "Extensions holds additional information. This is useful for\
+          \ extenders so that reads and writes don't clobber unknown fields\n+optional"
+        items:
+          $ref: "#/definitions/NamedExtension"
+        x-go-name: "Extensions"
+      namespace:
+        type: "string"
+        description: "Namespace is the default namespace to use on unspecified requests\n\
+          +optional"
+        x-go-name: "Namespace"
+      user:
+        type: "string"
+        description: "AuthInfo is the name of the authInfo for this context"
+        x-go-name: "AuthInfo"
+    description: "Context is a tuple of references to a cluster (how do I communicate\
+      \ with a kubernetes cluster), a user (how do I identify myself), and a namespace\
+      \ (what subset of resources do I want to work with)"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  CreateClusterReqBody:
+    type: "object"
+    properties:
+      cluster:
+        $ref: "#/definitions/Cluster"
+    description: "CreateClusterReqBody represents the request body for a create cluster\
+      \ request"
+    example:
+      cluster:
+        creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+        name: "name"
+        id: "id"
+        spec:
+          cloud:
+            vsphere:
+              password: "password"
+              vmNetName: "vmNetName"
+              infraManagementUser:
+                password: "password"
+                username: "username"
+              username: "username"
+            hetzner:
+              token: "token"
+            bringyourown: {}
+            fake:
+              token: "token"
+            openstack:
+              subnetID: "subnetID"
+              password: "password"
+              routerID: "routerID"
+              domain: "domain"
+              floatingIpPool: "floatingIpPool"
+              securityGroups: "securityGroups"
+              tenant: "tenant"
+              network: "network"
+              username: "username"
+            aws:
+              accessKeyId: "accessKeyId"
+              secretAccessKey: "secretAccessKey"
+              securityGroupID: "securityGroupID"
+              subnetId: "subnetId"
+              instanceProfileName: "instanceProfileName"
+              routeTableId: "routeTableId"
+              vpcId: "vpcId"
+              roleName: "roleName"
+              availabilityZone: "availabilityZone"
+            digitalocean:
+              token: "token"
+            azure:
+              vnet: "vnet"
+              availabilitySet: "availabilitySet"
+              resourceGroup: "resourceGroup"
+              subnet: "subnet"
+              clientID: "clientID"
+              routeTable: "routeTable"
+              tenantID: "tenantID"
+              clientSecret: "clientSecret"
+              securityGroup: "securityGroup"
+              subscriptionID: "subscriptionID"
+            dc: "dc"
+          version: "version"
+        deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+        status:
+          version: "version"
+          url: "url"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/handler"
+  CreateNodeReqBodyV3:
+    type: "object"
+    required:
+    - "spec"
+    properties:
+      metadata:
+        $ref: "#/definitions/ObjectMetaV2"
+      spec:
+        $ref: "#/definitions/NodeSpecV2"
+      status:
+        $ref: "#/definitions/NodeStatusV2"
+    description: "CreateNodeReqBodyV3 represents the request body of a create nodes\
+      \ request"
+    example:
+      metadata:
+        displayName: "displayName"
+        creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+        name: "name"
+        annotations:
+          key: "annotations"
+        deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+        labels:
+          key: "labels"
+      spec:
+        cloud:
+          vsphere:
+            template: "template"
+            templateNetName: "templateNetName"
+            memory: 1
+            cpus: 6
+          hetzner:
+            type: "type"
+          openstack:
+            flavor: "flavor"
+            image: "image"
+            tags:
+              key: "tags"
+          aws:
+            volumeType: "gp2, io1, st1, sc1, standard"
+            diskSize: 0
+            instanceType: "t2.micro"
+            ami: "ami"
+            tags:
+              key: "tags"
+          digitalocean:
+            size: "size"
+            ipv6: true
+            monitoring: true
+            backups: true
+            tags:
+            - "tags"
+            - "tags"
+          azure:
+            size: "size"
+            assignPublicIP: true
+            tags:
+              key: "tags"
+        versions:
+          containerRuntime:
+            name: "name"
+            version: "version"
+          kubelet: "kubelet"
+        operatingSystem:
+          ubuntu:
+            distUpgradeOnBoot: true
+          containerLinux:
+            disableAutoUpdate: true
+          centos:
+            distUpgradeOnBoot: true
+      status:
+        allocatable:
+          memory: "memory"
+          cpu: "cpu"
+        addresses:
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        errorReason: "errorReason"
+        errorMessage: "errorMessage"
+        nodeInfo:
+          containerRuntime: "containerRuntime"
+          containerRuntimeVersion: "containerRuntimeVersion"
+          kernelVersion: "kernelVersion"
+          kubeletVersion: "kubeletVersion"
+          operatingSystem: "operatingSystem"
+          architecture: "architecture"
+        machineName: "machineName"
+        capacity:
+          memory: "memory"
+          cpu: "cpu"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/handler"
+  Datacenter:
+    type: "object"
+    properties:
+      metadata:
+        $ref: "#/definitions/ObjectMeta"
+      seed:
+        type: "boolean"
+        x-go-name: "Seed"
+      spec:
+        $ref: "#/definitions/DatacenterSpec"
+    title: "Datacenter is the object representing a Kubernetes infra datacenter."
+    example:
+      metadata:
+        creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+        name: "name"
+        id: "id"
+        deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      seed: true
+      spec:
+        country: "country"
+        seed: "seed"
+        vsphere:
+          cluster: "cluster"
+          endpoint: "endpoint"
+          datastore: "datastore"
+          templates: null
+          datacenter: "datacenter"
+        hetzner:
+          datacenter: "datacenter"
+          location: "location"
+        provider: "provider"
+        bringyourown: {}
+        location: "location"
+        openstack:
+          availability_zone: "availability_zone"
+          images: {}
+          auth_url: "auth_url"
+          region: "region"
+        aws:
+          region: "region"
+        digitalocean:
+          region: "region"
+        azure:
+          location: "location"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  DatacenterList:
+    type: "array"
+    description: "DatacenterList represents a list of datacenters"
+    items:
+      $ref: "#/definitions/Datacenter"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  DatacenterSpec:
+    type: "object"
+    properties:
+      aws:
+        $ref: "#/definitions/AWSDatacenterSpec"
+      azure:
+        $ref: "#/definitions/AzureDatacenterSpec"
+      bringyourown:
+        $ref: "#/definitions/BringYourOwnDatacenterSpec"
+      country:
+        type: "string"
+        x-go-name: "Country"
+      digitalocean:
+        $ref: "#/definitions/DigitialoceanDatacenterSpec"
+      hetzner:
+        $ref: "#/definitions/HetznerDatacenterSpec"
+      location:
+        type: "string"
+        x-go-name: "Location"
+      openstack:
+        $ref: "#/definitions/OpenstackDatacenterSpec"
+      provider:
+        type: "string"
+        x-go-name: "Provider"
+      seed:
+        type: "string"
+        x-go-name: "Seed"
+      vsphere:
+        $ref: "#/definitions/VSphereDatacenterSpec"
+    title: "DatacenterSpec specifies the data for a datacenter."
+    example:
+      country: "country"
+      seed: "seed"
+      vsphere:
+        cluster: "cluster"
+        endpoint: "endpoint"
+        datastore: "datastore"
+        templates: null
+        datacenter: "datacenter"
+      hetzner:
+        datacenter: "datacenter"
+        location: "location"
+      provider: "provider"
+      bringyourown: {}
+      location: "location"
+      openstack:
+        availability_zone: "availability_zone"
+        images: {}
+        auth_url: "auth_url"
+        region: "region"
+      aws:
+        region: "region"
+      digitalocean:
+        region: "region"
+      azure:
+        location: "location"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  DeploymentSettings:
+    type: "object"
+    properties:
+      replicas:
+        type: "integer"
+        format: "int32"
+        x-go-name: "Replicas"
+      resources:
+        $ref: "#/definitions/ResourceRequirements"
+    example:
+      replicas: 5
+      resources:
+        requests: null
+        limits: {}
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  DigitaloceanCloudSpec:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        x-go-name: "Token"
+    title: "DigitaloceanCloudSpec specifies access data to DigitalOcean."
+    example:
+      token: "token"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  DigitaloceanNodeSpecV2:
+    type: "object"
+    required:
+    - "size"
+    properties:
+      backups:
+        type: "boolean"
+        description: "enable backups for the droplet"
+        x-go-name: "Backups"
+      ipv6:
+        type: "boolean"
+        description: "enable ipv6 for the droplet"
+        x-go-name: "IPv6"
+      monitoring:
+        type: "boolean"
+        description: "enable monitoring for the droplet"
+        x-go-name: "Monitoring"
+      size:
+        type: "string"
+        description: "droplet size slug"
+        x-go-name: "Size"
+      tags:
+        type: "array"
+        description: "additional droplet tags"
+        items:
+          type: "string"
+        x-go-name: "Tags"
+    description: "DigitaloceanNodeSpec digitalocean node settings"
+    example:
+      size: "size"
+      ipv6: true
+      monitoring: true
+      backups: true
+      tags:
+      - "tags"
+      - "tags"
+    x-go-name: "DigitaloceanNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  DigitaloceanSize:
+    type: "object"
+    properties:
+      available:
+        type: "boolean"
+        x-go-name: "Available"
+      disk:
+        type: "integer"
+        format: "int64"
+        x-go-name: "Disk"
+      memory:
+        type: "integer"
+        format: "int64"
+        x-go-name: "Memory"
+      price_hourly:
+        type: "number"
+        format: "double"
+        x-go-name: "PriceHourly"
+      price_monthly:
+        type: "number"
+        format: "double"
+        x-go-name: "PriceMonthly"
+      regions:
+        type: "array"
+        items:
+          type: "string"
+        x-go-name: "Regions"
+      slug:
+        type: "string"
+        x-go-name: "Slug"
+      transfer:
+        type: "number"
+        format: "double"
+        x-go-name: "Transfer"
+      vcpus:
+        type: "integer"
+        format: "int64"
+        x-go-name: "VCPUs"
+    title: "DigitaloceanSize is the object representing digitalocean sizes."
+    example:
+      price_monthly: 5.962133916683182
+      disk: 0
+      memory: 6
+      regions:
+      - "regions"
+      - "regions"
+      transfer: 5.637376656633329
+      available: true
+      vcpus: 2
+      slug: "slug"
+      price_hourly: 1.4658129805029452
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  DigitaloceanSizeList:
+    type: "object"
+    properties:
+      optimized:
+        type: "array"
+        items:
+          $ref: "#/definitions/DigitaloceanSize"
+        x-go-name: "Optimized"
+      standard:
+        type: "array"
+        items:
+          $ref: "#/definitions/DigitaloceanSize"
+        x-go-name: "Standard"
+    title: "DigitaloceanSizeList represents a object of digitalocean sizes."
+    example:
+      standard:
+      - price_monthly: 5.962133916683182
+        disk: 0
+        memory: 6
+        regions:
+        - "regions"
+        - "regions"
+        transfer: 5.637376656633329
+        available: true
+        vcpus: 2
+        slug: "slug"
+        price_hourly: 1.4658129805029452
+      - price_monthly: 5.962133916683182
+        disk: 0
+        memory: 6
+        regions:
+        - "regions"
+        - "regions"
+        transfer: 5.637376656633329
+        available: true
+        vcpus: 2
+        slug: "slug"
+        price_hourly: 1.4658129805029452
+      optimized:
+      - price_monthly: 5.962133916683182
+        disk: 0
+        memory: 6
+        regions:
+        - "regions"
+        - "regions"
+        transfer: 5.637376656633329
+        available: true
+        vcpus: 2
+        slug: "slug"
+        price_hourly: 1.4658129805029452
+      - price_monthly: 5.962133916683182
+        disk: 0
+        memory: 6
+        regions:
+        - "regions"
+        - "regions"
+        transfer: 5.637376656633329
+        available: true
+        vcpus: 2
+        slug: "slug"
+        price_hourly: 1.4658129805029452
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  DigitialoceanDatacenterSpec:
+    type: "object"
+    properties:
+      region:
+        type: "string"
+        x-go-name: "Region"
+    title: "DigitialoceanDatacenterSpec specifies a datacenter of DigitalOcean."
+    example:
+      region: "region"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ErrorDetails:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        description: "The error code"
+        x-go-name: "ErrorCode"
+      message:
+        type: "string"
+        description: "The error message"
+        x-go-name: "ErrorMessage"
+    description: "ErrorDetails contains details about the error"
+    example:
+      code: 0
+      message: "message"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/handler"
+  EtcdSettings:
+    type: "object"
+    properties:
+      resources:
+        $ref: "#/definitions/ResourceRequirements"
+    example:
+      resources:
+        requests: null
+        limits: {}
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  ExecConfig:
+    type: "object"
+    properties:
+      apiVersion:
+        type: "string"
+        description: "Preferred input version of the ExecInfo. The returned ExecCredentials\
+          \ MUST use\nthe same encoding version as the input."
+        x-go-name: "APIVersion"
+      args:
+        type: "array"
+        description: "Arguments to pass to the command when executing it.\n+optional"
+        items:
+          type: "string"
+        x-go-name: "Args"
+      command:
+        type: "string"
+        description: "Command to execute."
+        x-go-name: "Command"
+      env:
+        type: "array"
+        description: "Env defines additional environment variables to expose to the\
+          \ process. These\nare unioned with the host's environment, as well as variables\
+          \ client-go uses\nto pass argument to the plugin.\n+optional"
+        items:
+          $ref: "#/definitions/ExecEnvVar"
+        x-go-name: "Env"
+    title: "ExecConfig specifies a command to provide client credentials. The command\
+      \ is exec'd\nand outputs structured stdout holding credentials."
+    description: "See the client.authentiction.k8s.io API group for specifications\
+      \ of the exact input\nand output format"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  ExecEnvVar:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        x-go-name: "Name"
+      value:
+        type: "string"
+        x-go-name: "Value"
+    description: "ExecEnvVar is used for setting environment variables when executing\
+      \ an exec-based\ncredential plugin."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  FakeCloudSpec:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        x-go-name: "Token"
+    title: "FakeCloudSpec specifies access data for a fake cloud."
+    example:
+      token: "token"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  HetznerCloudSpec:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        x-go-name: "Token"
+    title: "HetznerCloudSpec specifies access data to hetzner cloud."
+    example:
+      token: "token"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  HetznerDatacenterSpec:
+    type: "object"
+    properties:
+      datacenter:
+        type: "string"
+        x-go-name: "Datacenter"
+      location:
+        type: "string"
+        x-go-name: "Location"
+    title: "HetznerDatacenterSpec specifies a datacenter of Hetzner."
+    example:
+      datacenter: "datacenter"
+      location: "location"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  HetznerNodeSpecV2:
+    type: "object"
+    required:
+    - "type"
+    properties:
+      type:
+        type: "string"
+        description: "server type"
+        x-go-name: "Type"
+    description: "HetznerNodeSpec Hetzner node settings"
+    example:
+      type: "type"
+    x-go-name: "HetznerNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  ImageList:
+    type: "object"
+    description: "ImageList defines a map of operating system and the image to use"
+    additionalProperties:
+      type: "string"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  Initializer:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "name of the process that is responsible for initializing this\
+          \ object."
+        x-go-name: "Name"
+    title: "Initializer is information about an initializer that has not yet completed."
+    example:
+      name: "name"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  Initializers:
+    type: "object"
+    properties:
+      pending:
+        type: "array"
+        description: "Pending is a list of initializers that must execute in order\
+          \ before this object is visible.\nWhen the last pending initializer is removed,\
+          \ and no failing result is set, the initializers\nstruct will be set to\
+          \ nil and the object is considered as initialized and visible to all\nclients.\n\
+          +patchMergeKey=name\n+patchStrategy=merge"
+        items:
+          $ref: "#/definitions/Initializer"
+        x-go-name: "Pending"
+      result:
+        $ref: "#/definitions/Status"
+    title: "Initializers tracks the progress of initialization."
+    example:
+      result:
+        reason: {}
+        apiVersion: "apiVersion"
+        code: 1
+        continue: "continue"
+        kind: "kind"
+        resourceVersion: "resourceVersion"
+        details:
+          uid: {}
+          kind: "kind"
+          causes:
+          - reason: {}
+            field: "field"
+            message: "message"
+          - reason: {}
+            field: "field"
+            message: "message"
+          retryAfterSeconds: 5
+          name: "name"
+          group: "group"
+        message: "message"
+        selfLink: "selfLink"
+        status: "status"
+      pending:
+      - name: "name"
+      - name: "name"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  KeyCert:
+    type: "object"
+    properties:
+      cert:
+        $ref: "#/definitions/Bytes"
+      key:
+        $ref: "#/definitions/Bytes"
+    title: "KeyCert is a pair of key and cert."
+    example:
+      cert: ""
+      key: ""
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  Kubeconfig:
+    type: "object"
+    properties:
+      apiVersion:
+        type: "string"
+        description: "Legacy field from pkg/api/types.go TypeMeta.\nTODO(jlowdermilk):\
+          \ remove this after eliminating downstream dependencies.\n+optional"
+        x-go-name: "APIVersion"
+      clusters:
+        type: "array"
+        description: "Clusters is a map of referencable names to cluster configs"
+        items:
+          $ref: "#/definitions/NamedCluster"
+        x-go-name: "Clusters"
+      contexts:
+        type: "array"
+        description: "Contexts is a map of referencable names to context configs"
+        items:
+          $ref: "#/definitions/NamedContext"
+        x-go-name: "Contexts"
+      current-context:
+        type: "string"
+        description: "CurrentContext is the name of the context that you would like\
+          \ to use by default"
+        x-go-name: "CurrentContext"
+      extensions:
+        type: "array"
+        description: "Extensions holds additional information. This is useful for\
+          \ extenders so that reads and writes don't clobber unknown fields\n+optional"
+        items:
+          $ref: "#/definitions/NamedExtension"
+        x-go-name: "Extensions"
+      kind:
+        type: "string"
+        description: "Legacy field from pkg/api/types.go TypeMeta.\nTODO(jlowdermilk):\
+          \ remove this after eliminating downstream dependencies.\n+optional"
+        x-go-name: "Kind"
+      preferences:
+        $ref: "#/definitions/Preferences"
+      users:
+        type: "array"
+        description: "AuthInfos is a map of referencable names to user configs"
+        items:
+          $ref: "#/definitions/NamedAuthInfo"
+        x-go-name: "AuthInfos"
+    description: "Kubeconfig is a clusters kubeconfig"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  MasterVersion:
+    type: "object"
+    properties:
+      allowedNodeVersions:
+        type: "array"
+        items:
+          type: "string"
+        x-go-name: "AllowedNodeVersions"
+      default:
+        type: "boolean"
+        x-go-name: "Default"
+      version:
+        $ref: "#/definitions/Version"
+    description: "MasterVersion describes a version of the master components"
+    example:
+      default: true
+      allowedNodeVersions:
+      - "allowedNodeVersions"
+      - "allowedNodeVersions"
+      version: {}
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  NamedAuthInfo:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name is the nickname for this AuthInfo"
+        x-go-name: "Name"
+      user:
+        $ref: "#/definitions/AuthInfo"
+    description: "NamedAuthInfo relates nicknames to auth information"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  NamedCluster:
+    type: "object"
+    properties:
+      cluster:
+        $ref: "#/definitions/Cluster"
+      name:
+        type: "string"
+        description: "Name is the nickname for this Cluster"
+        x-go-name: "Name"
+    description: "NamedCluster relates nicknames to cluster information"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  NamedContext:
+    type: "object"
+    properties:
+      context:
+        $ref: "#/definitions/Context"
+      name:
+        type: "string"
+        description: "Name is the nickname for this Context"
+        x-go-name: "Name"
+    description: "NamedContext relates nicknames to context information"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  NamedExtension:
+    type: "object"
+    properties:
+      extension:
+        $ref: "#/definitions/RawExtension"
+      name:
+        type: "string"
+        description: "Name is the nickname for this Extension"
+        x-go-name: "Name"
+    description: "NamedExtension relates nicknames to extension information"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  NetworkRanges:
+    type: "object"
+    properties:
+      cidrBlocks:
+        type: "array"
+        items:
+          type: "string"
+        x-go-name: "CIDRBlocks"
+    title: "NetworkRanges represents ranges of network addresses."
+    example:
+      cidrBlocks:
+      - "cidrBlocks"
+      - "cidrBlocks"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  NewClusterSpec:
+    type: "object"
+    properties:
+      cloud:
+        $ref: "#/definitions/CloudSpec"
+      version:
+        type: "string"
+        description: "Version desired version of the kubernetes master components"
+        x-go-name: "Version"
+    description: "NewClusterSpec defines the cluster specification"
+    example:
+      cloud:
+        vsphere:
+          password: "password"
+          vmNetName: "vmNetName"
+          infraManagementUser:
+            password: "password"
+            username: "username"
+          username: "username"
+        hetzner:
+          token: "token"
+        bringyourown: {}
+        fake:
+          token: "token"
+        openstack:
+          subnetID: "subnetID"
+          password: "password"
+          routerID: "routerID"
+          domain: "domain"
+          floatingIpPool: "floatingIpPool"
+          securityGroups: "securityGroups"
+          tenant: "tenant"
+          network: "network"
+          username: "username"
+        aws:
+          accessKeyId: "accessKeyId"
+          secretAccessKey: "secretAccessKey"
+          securityGroupID: "securityGroupID"
+          subnetId: "subnetId"
+          instanceProfileName: "instanceProfileName"
+          routeTableId: "routeTableId"
+          vpcId: "vpcId"
+          roleName: "roleName"
+          availabilityZone: "availabilityZone"
+        digitalocean:
+          token: "token"
+        azure:
+          vnet: "vnet"
+          availabilitySet: "availabilitySet"
+          resourceGroup: "resourceGroup"
+          subnet: "subnet"
+          clientID: "clientID"
+          routeTable: "routeTable"
+          tenantID: "tenantID"
+          clientSecret: "clientSecret"
+          securityGroup: "securityGroup"
+          subscriptionID: "subscriptionID"
+        dc: "dc"
+      version: "version"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  NewClusterStatus:
+    type: "object"
+    properties:
+      url:
+        type: "string"
+        description: "URL specifies the address at which the cluster is available"
+        x-go-name: "URL"
+      version:
+        type: "string"
+        description: "Version actual version of the kubernetes master components"
+        x-go-name: "Version"
+    description: "NewClusterStatus defines the cluster status"
+    example:
+      version: "version"
+      url: "url"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  NewSSHKey:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+      spec:
+        $ref: "#/definitions/NewSSHKeySpec"
+    description: "NewSSHKey represents a ssh key"
+    example:
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      spec:
+        fingerprint: "fingerprint"
+        publicKey: "publicKey"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  NewSSHKeySpec:
+    type: "object"
+    properties:
+      fingerprint:
+        type: "string"
+        x-go-name: "Fingerprint"
+      publicKey:
+        type: "string"
+        x-go-name: "PublicKey"
+    description: "NewSSHKeySpec represents the details of a ssh key"
+    example:
+      fingerprint: "fingerprint"
+      publicKey: "publicKey"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  Node:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+      spec:
+        $ref: "#/definitions/NodeSpecV2"
+      status:
+        $ref: "#/definitions/NodeStatusV2"
+    description: "Node represents a worker node that is part of a cluster"
+    example:
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      spec:
+        cloud:
+          vsphere:
+            template: "template"
+            templateNetName: "templateNetName"
+            memory: 1
+            cpus: 6
+          hetzner:
+            type: "type"
+          openstack:
+            flavor: "flavor"
+            image: "image"
+            tags:
+              key: "tags"
+          aws:
+            volumeType: "gp2, io1, st1, sc1, standard"
+            diskSize: 0
+            instanceType: "t2.micro"
+            ami: "ami"
+            tags:
+              key: "tags"
+          digitalocean:
+            size: "size"
+            ipv6: true
+            monitoring: true
+            backups: true
+            tags:
+            - "tags"
+            - "tags"
+          azure:
+            size: "size"
+            assignPublicIP: true
+            tags:
+              key: "tags"
+        versions:
+          containerRuntime:
+            name: "name"
+            version: "version"
+          kubelet: "kubelet"
+        operatingSystem:
+          ubuntu:
+            distUpgradeOnBoot: true
+          containerLinux:
+            disableAutoUpdate: true
+          centos:
+            distUpgradeOnBoot: true
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      status:
+        allocatable:
+          memory: "memory"
+          cpu: "cpu"
+        addresses:
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        errorReason: "errorReason"
+        errorMessage: "errorMessage"
+        nodeInfo:
+          containerRuntime: "containerRuntime"
+          containerRuntimeVersion: "containerRuntimeVersion"
+          kernelVersion: "kernelVersion"
+          kubeletVersion: "kubeletVersion"
+          operatingSystem: "operatingSystem"
+          architecture: "architecture"
+        machineName: "machineName"
+        capacity:
+          memory: "memory"
+          cpu: "cpu"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  NodeAddressV2:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+        example: "192.168.1.1, node1.my.dns"
+        x-go-name: "Address"
+      type:
+        type: "string"
+        example: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        x-go-name: "Type"
+    title: "NodeAddress contains information for the node's address."
+    example:
+      address: "192.168.1.1, node1.my.dns"
+      type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+    x-go-name: "NodeAddress"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeCloudSpecV2:
+    type: "object"
+    properties:
+      aws:
+        $ref: "#/definitions/AWSNodeSpecV2"
+      azure:
+        $ref: "#/definitions/AzureNodeSpecV1"
+      digitalocean:
+        $ref: "#/definitions/DigitaloceanNodeSpecV2"
+      hetzner:
+        $ref: "#/definitions/HetznerNodeSpecV2"
+      openstack:
+        $ref: "#/definitions/OpenstackNodeSpecV2"
+      vsphere:
+        $ref: "#/definitions/VSphereNodeSpecV2"
+    title: "NodeCloudSpec represents the collection of cloud provider specific settings.\
+      \ Only one must be set at a time."
+    example:
+      vsphere:
+        template: "template"
+        templateNetName: "templateNetName"
+        memory: 1
+        cpus: 6
+      hetzner:
+        type: "type"
+      openstack:
+        flavor: "flavor"
+        image: "image"
+        tags:
+          key: "tags"
+      aws:
+        volumeType: "gp2, io1, st1, sc1, standard"
+        diskSize: 0
+        instanceType: "t2.micro"
+        ami: "ami"
+        tags:
+          key: "tags"
+      digitalocean:
+        size: "size"
+        ipv6: true
+        monitoring: true
+        backups: true
+        tags:
+        - "tags"
+        - "tags"
+      azure:
+        size: "size"
+        assignPublicIP: true
+        tags:
+          key: "tags"
+    x-go-name: "NodeCloudSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeContainerRuntimeInfoV2:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        x-go-name: "Name"
+      version:
+        type: "string"
+        x-go-name: "Version"
+    description: "NodeContainerRuntimeInfo information about the container runtime.\
+      \ Currently only \"cri-o\" and \"docker\" are supported"
+    example:
+      name: "name"
+      version: "version"
+    x-go-name: "NodeContainerRuntimeInfo"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeListV2:
+    type: "array"
+    description: "NodeList represents a list of nodes"
+    items:
+      $ref: "#/definitions/NodeV2"
+    x-go-name: "NodeList"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeResourcesV2:
+    type: "object"
+    properties:
+      cpu:
+        type: "string"
+        x-go-name: "CPU"
+      memory:
+        type: "string"
+        x-go-name: "Memory"
+    description: "NodeResources cpu and memory of a node"
+    example:
+      memory: "memory"
+      cpu: "cpu"
+    x-go-name: "NodeResources"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeSpecV2:
+    type: "object"
+    required:
+    - "cloud"
+    - "operatingSystem"
+    - "versions"
+    properties:
+      cloud:
+        $ref: "#/definitions/NodeCloudSpecV2"
+      operatingSystem:
+        $ref: "#/definitions/OperatingSystemSpecV2"
+      versions:
+        $ref: "#/definitions/NodeVersionInfoV2"
+    description: "NodeSpec node specification"
+    example:
+      cloud:
+        vsphere:
+          template: "template"
+          templateNetName: "templateNetName"
+          memory: 1
+          cpus: 6
+        hetzner:
+          type: "type"
+        openstack:
+          flavor: "flavor"
+          image: "image"
+          tags:
+            key: "tags"
+        aws:
+          volumeType: "gp2, io1, st1, sc1, standard"
+          diskSize: 0
+          instanceType: "t2.micro"
+          ami: "ami"
+          tags:
+            key: "tags"
+        digitalocean:
+          size: "size"
+          ipv6: true
+          monitoring: true
+          backups: true
+          tags:
+          - "tags"
+          - "tags"
+        azure:
+          size: "size"
+          assignPublicIP: true
+          tags:
+            key: "tags"
+      versions:
+        containerRuntime:
+          name: "name"
+          version: "version"
+        kubelet: "kubelet"
+      operatingSystem:
+        ubuntu:
+          distUpgradeOnBoot: true
+        containerLinux:
+          disableAutoUpdate: true
+        centos:
+          distUpgradeOnBoot: true
+    x-go-name: "NodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeStatusV2:
+    type: "object"
+    properties:
+      addresses:
+        type: "array"
+        description: "different addresses of a node"
+        items:
+          $ref: "#/definitions/NodeAddressV2"
+        x-go-name: "Addresses"
+      allocatable:
+        $ref: "#/definitions/NodeResourcesV2"
+      capacity:
+        $ref: "#/definitions/NodeResourcesV2"
+      errorMessage:
+        type: "string"
+        description: "in case of a error this will contain a detailed error explanation"
+        x-go-name: "ErrorMessage"
+      errorReason:
+        type: "string"
+        description: "in case of a error this will contain a short error message"
+        x-go-name: "ErrorReason"
+      machineName:
+        type: "string"
+        description: "name of the actual Machine object"
+        x-go-name: "MachineName"
+      nodeInfo:
+        $ref: "#/definitions/NodeSystemInfoV2"
+    title: "NodeStatus is information about the current status of a node."
+    example:
+      allocatable:
+        memory: "memory"
+        cpu: "cpu"
+      addresses:
+      - address: "192.168.1.1, node1.my.dns"
+        type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+      - address: "192.168.1.1, node1.my.dns"
+        type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+      errorReason: "errorReason"
+      errorMessage: "errorMessage"
+      nodeInfo:
+        containerRuntime: "containerRuntime"
+        containerRuntimeVersion: "containerRuntimeVersion"
+        kernelVersion: "kernelVersion"
+        kubeletVersion: "kubeletVersion"
+        operatingSystem: "operatingSystem"
+        architecture: "architecture"
+      machineName: "machineName"
+      capacity:
+        memory: "memory"
+        cpu: "cpu"
+    x-go-name: "NodeStatus"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeSystemInfoV2:
+    type: "object"
+    properties:
+      architecture:
+        type: "string"
+        x-go-name: "Architecture"
+      containerRuntime:
+        type: "string"
+        x-go-name: "ContainerRuntime"
+      containerRuntimeVersion:
+        type: "string"
+        x-go-name: "ContainerRuntimeVersion"
+      kernelVersion:
+        type: "string"
+        x-go-name: "KernelVersion"
+      kubeletVersion:
+        type: "string"
+        x-go-name: "KubeletVersion"
+      operatingSystem:
+        type: "string"
+        x-go-name: "OperatingSystem"
+    title: "NodeSystemInfo is a set of versions/ids/uuids to uniquely identify the\
+      \ node."
+    example:
+      containerRuntime: "containerRuntime"
+      containerRuntimeVersion: "containerRuntimeVersion"
+      kernelVersion: "kernelVersion"
+      kubeletVersion: "kubeletVersion"
+      operatingSystem: "operatingSystem"
+      architecture: "architecture"
+    x-go-name: "NodeSystemInfo"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeV2:
+    type: "object"
+    required:
+    - "spec"
+    properties:
+      metadata:
+        $ref: "#/definitions/ObjectMetaV2"
+      spec:
+        $ref: "#/definitions/NodeSpecV2"
+      status:
+        $ref: "#/definitions/NodeStatusV2"
+    title: "Node is the object representing a cluster node."
+    example:
+      metadata:
+        displayName: "displayName"
+        creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+        name: "name"
+        annotations:
+          key: "annotations"
+        deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+        labels:
+          key: "labels"
+      spec:
+        cloud:
+          vsphere:
+            template: "template"
+            templateNetName: "templateNetName"
+            memory: 1
+            cpus: 6
+          hetzner:
+            type: "type"
+          openstack:
+            flavor: "flavor"
+            image: "image"
+            tags:
+              key: "tags"
+          aws:
+            volumeType: "gp2, io1, st1, sc1, standard"
+            diskSize: 0
+            instanceType: "t2.micro"
+            ami: "ami"
+            tags:
+              key: "tags"
+          digitalocean:
+            size: "size"
+            ipv6: true
+            monitoring: true
+            backups: true
+            tags:
+            - "tags"
+            - "tags"
+          azure:
+            size: "size"
+            assignPublicIP: true
+            tags:
+              key: "tags"
+        versions:
+          containerRuntime:
+            name: "name"
+            version: "version"
+          kubelet: "kubelet"
+        operatingSystem:
+          ubuntu:
+            distUpgradeOnBoot: true
+          containerLinux:
+            disableAutoUpdate: true
+          centos:
+            distUpgradeOnBoot: true
+      status:
+        allocatable:
+          memory: "memory"
+          cpu: "cpu"
+        addresses:
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        - address: "192.168.1.1, node1.my.dns"
+          type: "ExternalIP, InternalIP, InternalDNS, ExternalDNS"
+        errorReason: "errorReason"
+        errorMessage: "errorMessage"
+        nodeInfo:
+          containerRuntime: "containerRuntime"
+          containerRuntimeVersion: "containerRuntimeVersion"
+          kernelVersion: "kernelVersion"
+          kubeletVersion: "kubeletVersion"
+          operatingSystem: "operatingSystem"
+          architecture: "architecture"
+        machineName: "machineName"
+        capacity:
+          memory: "memory"
+          cpu: "cpu"
+    x-go-name: "Node"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  NodeVersionInfoV2:
+    type: "object"
+    properties:
+      containerRuntime:
+        $ref: "#/definitions/NodeContainerRuntimeInfoV2"
+      kubelet:
+        type: "string"
+        x-go-name: "Kubelet"
+    description: "NodeVersionInfo node version information"
+    example:
+      containerRuntime:
+        name: "name"
+        version: "version"
+      kubelet: "kubelet"
+    x-go-name: "NodeVersionInfo"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  ObjectMeta:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+    description: "NewObjectMeta defines the set of fields that objects returned from\
+      \ the API have"
+    example:
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+    x-go-name: "NewObjectMeta"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ObjectMetaV2:
+    type: "object"
+    properties:
+      annotations:
+        type: "object"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Annotations"
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      displayName:
+        type: "string"
+        description: "The name to display in the frontend"
+        x-go-name: "DisplayName"
+      labels:
+        type: "object"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Labels"
+      name:
+        type: "string"
+        description: "The unique name"
+        x-go-name: "Name"
+    title: "ObjectMeta is an object storing common metadata for persistable objects."
+    example:
+      displayName: "displayName"
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      annotations:
+        key: "annotations"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      labels:
+        key: "labels"
+    x-go-name: "ObjectMeta"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  OpenstackCloudSpec:
+    type: "object"
+    properties:
+      domain:
+        type: "string"
+        x-go-name: "Domain"
+      floatingIpPool:
+        type: "string"
+        x-go-name: "FloatingIPPool"
+      network:
+        type: "string"
+        x-go-name: "Network"
+      password:
+        type: "string"
+        x-go-name: "Password"
+      routerID:
+        type: "string"
+        x-go-name: "RouterID"
+      securityGroups:
+        type: "string"
+        x-go-name: "SecurityGroups"
+      subnetID:
+        type: "string"
+        x-go-name: "SubnetID"
+      tenant:
+        type: "string"
+        x-go-name: "Tenant"
+      username:
+        type: "string"
+        x-go-name: "Username"
+    title: "OpenstackCloudSpec specifies access data to an openstack cloud."
+    example:
+      subnetID: "subnetID"
+      password: "password"
+      routerID: "routerID"
+      domain: "domain"
+      floatingIpPool: "floatingIpPool"
+      securityGroups: "securityGroups"
+      tenant: "tenant"
+      network: "network"
+      username: "username"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  OpenstackDatacenterSpec:
+    type: "object"
+    properties:
+      auth_url:
+        type: "string"
+        x-go-name: "AuthURL"
+      availability_zone:
+        type: "string"
+        x-go-name: "AvailabilityZone"
+      images:
+        $ref: "#/definitions/ImageList"
+      region:
+        type: "string"
+        x-go-name: "Region"
+    title: "OpenstackDatacenterSpec specifies a generic bare metal datacenter."
+    example:
+      availability_zone: "availability_zone"
+      images: {}
+      auth_url: "auth_url"
+      region: "region"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OpenstackNetwork:
+    type: "object"
+    properties:
+      external:
+        type: "boolean"
+        description: "External set if network is the external network"
+        x-go-name: "External"
+      id:
+        type: "string"
+        description: "Id uniquely identifies the current network"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name is the name of the network"
+        x-go-name: "Name"
+    title: "OpenstackNetwork is the object representing a openstack network."
+    example:
+      external: true
+      name: "name"
+      id: "id"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OpenstackNodeSpecV2:
+    type: "object"
+    required:
+    - "flavor"
+    - "image"
+    properties:
+      flavor:
+        type: "string"
+        description: "instance flavor"
+        x-go-name: "Flavor"
+      image:
+        type: "string"
+        description: "image to use"
+        x-go-name: "Image"
+      tags:
+        type: "object"
+        description: "Additional metadata to set"
+        additionalProperties:
+          type: "string"
+        x-go-name: "Tags"
+    description: "OpenstackNodeSpec openstack node settings"
+    example:
+      flavor: "flavor"
+      image: "image"
+      tags:
+        key: "tags"
+    x-go-name: "OpenstackNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  OpenstackSecurityGroup:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id uniquely identifies the current security group"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name is the name of the security group"
+        x-go-name: "Name"
+    title: "OpenstackSecurityGroup is the object representing a openstack security\
+      \ group."
+    example:
+      name: "name"
+      id: "id"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OpenstackSize:
+    type: "object"
+    properties:
+      disk:
+        type: "integer"
+        format: "int64"
+        description: "Disk is the amount of root disk, measured in GB"
+        x-go-name: "Disk"
+      isPublic:
+        type: "boolean"
+        description: "IsPublic indicates whether the size is public (available to\
+          \ all projects) or scoped to a set of projects"
+        x-go-name: "IsPublic"
+      memory:
+        type: "integer"
+        format: "int64"
+        description: "Memory is the amount of memory, measured in MB"
+        x-go-name: "Memory"
+      region:
+        type: "string"
+        description: "Region specifies the geographic region in which the size resides"
+        x-go-name: "Region"
+      slug:
+        type: "string"
+        description: "Slug holds  the name of the size"
+        x-go-name: "Slug"
+      swap:
+        type: "integer"
+        format: "int64"
+        description: "Swap is the amount of swap space, measured in MB"
+        x-go-name: "Swap"
+      vcpus:
+        type: "integer"
+        format: "int64"
+        description: "VCPUs indicates how many (virtual) CPUs are available for this\
+          \ flavor"
+        x-go-name: "VCPUs"
+    title: "OpenstackSize is the object representing openstack's sizes."
+    example:
+      disk: 0
+      memory: 6
+      swap: 1
+      isPublic: true
+      region: "region"
+      vcpus: 5
+      slug: "slug"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OpenstackSubnet:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id uniquely identifies the subnet"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name is human-readable name for the subnet"
+        x-go-name: "Name"
+    title: "OpenstackSubnet is the object representing a openstack subnet."
+    example:
+      name: "name"
+      id: "id"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OpenstackTenant:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id uniquely identifies the current tenant"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name is the name of the tenant"
+        x-go-name: "Name"
+    title: "OpenstackTenant is the object representing a openstack tenant."
+    example:
+      name: "name"
+      id: "id"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  OperatingSystemSpecV2:
+    type: "object"
+    properties:
+      centos:
+        $ref: "#/definitions/CentOSSpec"
+      containerLinux:
+        $ref: "#/definitions/ContainerLinuxSpecV2"
+      ubuntu:
+        $ref: "#/definitions/UbuntuSpecV2"
+    title: "OperatingSystemSpec represents the collection of os specific settings.\
+      \ Only one must be set at a time."
+    example:
+      ubuntu:
+        distUpgradeOnBoot: true
+      containerLinux:
+        disableAutoUpdate: true
+      centos:
+        distUpgradeOnBoot: true
+    x-go-name: "OperatingSystemSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  OwnerReference:
+    type: "object"
+    properties:
+      apiVersion:
+        type: "string"
+        description: "API version of the referent."
+        x-go-name: "APIVersion"
+      blockOwnerDeletion:
+        type: "boolean"
+        description: "If true, AND if the owner has the \"foregroundDeletion\" finalizer,\
+          \ then\nthe owner cannot be deleted from the key-value store until this\n\
+          reference is removed.\nDefaults to false.\nTo set this field, a user needs\
+          \ \"delete\" permission of the owner,\notherwise 422 (Unprocessable Entity)\
+          \ will be returned.\n+optional"
+        x-go-name: "BlockOwnerDeletion"
+      controller:
+        type: "boolean"
+        description: "If true, this reference points to the managing controller.\n\
+          +optional"
+        x-go-name: "Controller"
+      kind:
+        type: "string"
+        description: "Kind of the referent.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds"
+        x-go-name: "Kind"
+      name:
+        type: "string"
+        description: "Name of the referent.\nMore info: http://kubernetes.io/docs/user-guide/identifiers#names"
+        x-go-name: "Name"
+      uid:
+        $ref: "#/definitions/UID"
+    description: "OwnerReference contains enough information to let you identify an\
+      \ owning\nobject. Currently, an owning object must be in the same namespace,\
+      \ so there\nis no namespace field."
+    example:
+      uid: null
+      controller: true
+      apiVersion: "apiVersion"
+      kind: "kind"
+      name: "name"
+      blockOwnerDeletion: true
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  Preferences:
+    type: "object"
+    properties:
+      colors:
+        type: "boolean"
+        description: "+optional"
+        x-go-name: "Colors"
+      extensions:
+        type: "array"
+        description: "Extensions holds additional information. This is useful for\
+          \ extenders so that reads and writes don't clobber unknown fields\n+optional"
+        items:
+          $ref: "#/definitions/NamedExtension"
+        x-go-name: "Extensions"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/client-go/tools/clientcmd/api/v1"
+  Project:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+      status:
+        type: "string"
+        x-go-name: "Status"
+    description: "Project is a top-level container for a set of resources"
+    example:
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      status: "status"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  ProjectGroup:
+    type: "object"
+    properties:
+      group:
+        type: "string"
+        x-go-name: "GroupPrefix"
+      id:
+        type: "string"
+        x-go-name: "ID"
+    description: "ProjectGroup is a helper data structure that\nstores the information\
+      \ about a project and a group prefix that a user belongs to"
+    example:
+      id: "id"
+      group: "group"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  RSAKeys:
+    type: "object"
+    properties:
+      privateKey:
+        $ref: "#/definitions/Bytes"
+      publicKey:
+        $ref: "#/definitions/Bytes"
+    title: "RSAKeys is a pair of private and public key where the key is not published\
+      \ to the API client."
+    example:
+      privateKey: ""
+      publicKey: ""
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  RawExtension:
+    type: "object"
+    properties:
+      Raw:
+        type: "array"
+        description: "Raw is the underlying serialization of this object.\n\nTODO:\
+          \ Determine how to detect ContentType and ContentEncoding of 'Raw' data."
+        items:
+          type: "integer"
+          format: "uint8"
+    title: "RawExtension is used to hold extensions in external versions."
+    description: "To use this, make a field which has RawExtension as its type in\
+      \ your external, versioned\nstruct, and Object in your internal struct. You\
+      \ also need to register your\nvarious plugin types.\n\nInternal package:\ntype\
+      \ MyAPIObject struct {\nruntime.TypeMeta `json:\",inline\"`\nMyPlugin runtime.Object\
+      \ `json:\"myPlugin\"`\n}\ntype PluginA struct {\nAOption string `json:\"aOption\"\
+      `\n}\n\nExternal package:\ntype MyAPIObject struct {\nruntime.TypeMeta `json:\"\
+      ,inline\"`\nMyPlugin runtime.RawExtension `json:\"myPlugin\"`\n}\ntype PluginA\
+      \ struct {\nAOption string `json:\"aOption\"`\n}\n\nOn the wire, the JSON will\
+      \ look something like this:\n{\n\"kind\":\"MyAPIObject\",\n\"apiVersion\":\"\
+      v1\",\n\"myPlugin\": {\n\"kind\":\"PluginA\",\n\"aOption\":\"foo\",\n},\n}\n\
+      \nSo what happens? Decode first uses json or yaml to unmarshal the serialized\
+      \ data into\nyour external MyAPIObject. That causes the raw JSON to be stored,\
+      \ but not unpacked.\nThe next step is to copy (using pkg/conversion) into the\
+      \ internal struct. The runtime\npackage's DefaultScheme has conversion functions\
+      \ installed which will unpack the\nJSON stored in RawExtension, turning it into\
+      \ the correct object type, and storing it\nin the Object. (TODO: In the case\
+      \ where the object is of an unknown type, a\nruntime.Unknown object will be\
+      \ created and stored.)\n\n+k8s:deepcopy-gen=true\n+protobuf=true\n+k8s:openapi-gen=true"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/runtime"
+  ResourceList:
+    title: "ResourceList is a set of (resource name, quantity) pairs."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/api/core/v1"
+  ResourceRequirements:
+    type: "object"
+    properties:
+      limits:
+        $ref: "#/definitions/ResourceList"
+      requests:
+        $ref: "#/definitions/ResourceList"
+    title: "ResourceRequirements describes the compute resource requirements."
+    example:
+      requests: null
+      limits: {}
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/api/core/v1"
+  SSHKey:
+    type: "object"
+    properties:
+      metadata:
+        $ref: "#/definitions/ObjectMeta"
+      spec:
+        $ref: "#/definitions/SSHKeySpec"
+    description: "SSHKey represents a ssh key"
+    example:
+      metadata:
+        creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+        name: "name"
+        id: "id"
+        deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+      spec:
+        owner: "owner"
+        fingerprint: "fingerprint"
+        name: "name"
+        publicKey: "publicKey"
+        clusters:
+        - "clusters"
+        - "clusters"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  SSHKeySpec:
+    type: "object"
+    properties:
+      clusters:
+        type: "array"
+        items:
+          type: "string"
+        x-go-name: "Clusters"
+      fingerprint:
+        type: "string"
+        x-go-name: "Fingerprint"
+      name:
+        type: "string"
+        x-go-name: "Name"
+      owner:
+        type: "string"
+        x-go-name: "Owner"
+      publicKey:
+        type: "string"
+        x-go-name: "PublicKey"
+    description: "SSHKeySpec represents the details of a ssh key"
+    example:
+      owner: "owner"
+      fingerprint: "fingerprint"
+      name: "name"
+      publicKey: "publicKey"
+      clusters:
+      - "clusters"
+      - "clusters"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  Status:
+    type: "object"
+    properties:
+      apiVersion:
+        type: "string"
+        description: "APIVersion defines the versioned schema of this representation\
+          \ of an object.\nServers should convert recognized schemas to the latest\
+          \ internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources\n\
+          +optional"
+        x-go-name: "APIVersion"
+      code:
+        type: "integer"
+        format: "int32"
+        description: "Suggested HTTP return code for this status, 0 if not set.\n\
+          +optional"
+        x-go-name: "Code"
+      continue:
+        type: "string"
+        description: "continue may be set if the user set a limit on the number of\
+          \ items returned, and indicates that\nthe server has more data available.\
+          \ The value is opaque and may be used to issue another request\nto the endpoint\
+          \ that served this list to retrieve the next set of available objects. Continuing\
+          \ a\nlist may not be possible if the server configuration has changed or\
+          \ more than a few minutes have\npassed. The resourceVersion field returned\
+          \ when using this continue value will be identical to\nthe value in the\
+          \ first response."
+        x-go-name: "Continue"
+      details:
+        $ref: "#/definitions/StatusDetails"
+      kind:
+        type: "string"
+        description: "Kind is a string value representing the REST resource this object\
+          \ represents.\nServers may infer this from the endpoint the client submits\
+          \ requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds\n\
+          +optional"
+        x-go-name: "Kind"
+      message:
+        type: "string"
+        description: "A human-readable description of the status of this operation.\n\
+          +optional"
+        x-go-name: "Message"
+      reason:
+        $ref: "#/definitions/StatusReason"
+      resourceVersion:
+        type: "string"
+        description: "String that identifies the server's internal version of this\
+          \ object that\ncan be used by clients to determine when objects have changed.\n\
+          Value must be treated as opaque by clients and passed unmodified back to\
+          \ the server.\nPopulated by the system.\nRead-only.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-control-and-consistency\n\
+          +optional"
+        x-go-name: "ResourceVersion"
+      selfLink:
+        type: "string"
+        description: "selfLink is a URL representing this object.\nPopulated by the\
+          \ system.\nRead-only.\n+optional"
+        x-go-name: "SelfLink"
+      status:
+        type: "string"
+        description: "Status of the operation.\nOne of: \"Success\" or \"Failure\"\
+          .\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status\n\
+          +optional"
+        x-go-name: "Status"
+    title: "Status is a return value for calls that don't return other objects."
+    example:
+      reason: {}
+      apiVersion: "apiVersion"
+      code: 1
+      continue: "continue"
+      kind: "kind"
+      resourceVersion: "resourceVersion"
+      details:
+        uid: {}
+        kind: "kind"
+        causes:
+        - reason: {}
+          field: "field"
+          message: "message"
+        - reason: {}
+          field: "field"
+          message: "message"
+        retryAfterSeconds: 5
+        name: "name"
+        group: "group"
+      message: "message"
+      selfLink: "selfLink"
+      status: "status"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  StatusCause:
+    type: "object"
+    properties:
+      field:
+        type: "string"
+        description: "The field of the resource that has caused this error, as named\
+          \ by its JSON\nserialization. May include dot and postfix notation for nested\
+          \ attributes.\nArrays are zero-indexed.  Fields may appear more than once\
+          \ in an array of\ncauses due to fields having multiple errors.\nOptional.\n\
+          \nExamples:\n\"name\" - the field \"name\" on the current resource\n\"items[0].name\"\
+          \ - the field \"name\" on the first array entry in \"items\"\n+optional"
+        x-go-name: "Field"
+      message:
+        type: "string"
+        description: "A human-readable description of the cause of the error.  This\
+          \ field may be\npresented as-is to a reader.\n+optional"
+        x-go-name: "Message"
+      reason:
+        $ref: "#/definitions/CauseType"
+    description: "StatusCause provides more information about an api.Status failure,\
+      \ including\ncases when multiple errors are encountered."
+    example:
+      reason: {}
+      field: "field"
+      message: "message"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  StatusDetails:
+    type: "object"
+    properties:
+      causes:
+        type: "array"
+        description: "The Causes array includes more details associated with the StatusReason\n\
+          failure. Not all StatusReasons may provide detailed causes.\n+optional"
+        items:
+          $ref: "#/definitions/StatusCause"
+        x-go-name: "Causes"
+      group:
+        type: "string"
+        description: "The group attribute of the resource associated with the status\
+          \ StatusReason.\n+optional"
+        x-go-name: "Group"
+      kind:
+        type: "string"
+        description: "The kind attribute of the resource associated with the status\
+          \ StatusReason.\nOn some operations may differ from the requested resource\
+          \ Kind.\nMore info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds\n\
+          +optional"
+        x-go-name: "Kind"
+      name:
+        type: "string"
+        description: "The name attribute of the resource associated with the status\
+          \ StatusReason\n(when there is a single name which can be described).\n\
+          +optional"
+        x-go-name: "Name"
+      retryAfterSeconds:
+        type: "integer"
+        format: "int32"
+        description: "If specified, the time in seconds before the operation should\
+          \ be retried. Some errors may indicate\nthe client must take an alternate\
+          \ action - for those errors this field may indicate how long to wait\nbefore\
+          \ taking the alternate action.\n+optional"
+        x-go-name: "RetryAfterSeconds"
+      uid:
+        $ref: "#/definitions/UID"
+    description: "StatusDetails is a set of additional properties that MAY be set\
+      \ by the\nserver to provide additional information about a response. The Reason\n\
+      field of a Status object defines what attributes will be set. Clients\nmust\
+      \ ignore fields that do not match the defined type of each attribute,\nand should\
+      \ assume that any attribute may be empty, invalid, or under\ndefined."
+    example:
+      uid: {}
+      kind: "kind"
+      causes:
+      - reason: {}
+        field: "field"
+        message: "message"
+      - reason: {}
+        field: "field"
+        message: "message"
+      retryAfterSeconds: 5
+      name: "name"
+      group: "group"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  StatusReason:
+    type: "string"
+    description: "StatusReason is an enumeration of possible failure causes.  Each\
+      \ StatusReason\nmust map to a single HTTP status code, but multiple reasons\
+      \ may map\nto the same HTTP status code.\nTODO: move to apiserver"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  Time:
+    type: "object"
+    title: "Time is a wrapper around time.Time which supports correct\nmarshaling\
+      \ to YAML and JSON.  Wrappers are provided for many\nof the factory methods\
+      \ that the time package offers."
+    description: "+protobuf.options.marshal=false\n+protobuf.as=Timestamp\n+protobuf.options.(gogoproto.goproto_stringer)=false"
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
+  UID:
+    type: "string"
+    description: "UID is a type that holds unique ID values, including UUIDs.  Because\
+      \ we\ndon't ONLY use UUIDs, this is an alias to string.  Being a type captures\n\
+      intent and helps make sure that UIDs and names do not get conflated."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/k8s.io/apimachinery/pkg/types"
+  UbuntuSpecV2:
+    type: "object"
+    properties:
+      distUpgradeOnBoot:
+        type: "boolean"
+        description: "do a dist-upgrade on boot and reboot it required afterwards"
+        x-go-name: "DistUpgradeOnBoot"
+    description: "UbuntuSpec ubuntu specific settings"
+    example:
+      distUpgradeOnBoot: true
+    x-go-name: "UbuntuSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  User:
+    type: "object"
+    properties:
+      creationTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "CreationTimestamp is a timestamp representing the server time\
+          \ when this object was created."
+        x-go-name: "CreationTimestamp"
+      deletionTimestamp:
+        type: "string"
+        format: "date-time"
+        description: "DeletionTimestamp is a timestamp representing the server time\
+          \ when this object was deleted."
+        x-go-name: "DeletionTimestamp"
+      email:
+        type: "string"
+        description: "Email an email address of the user"
+        x-go-name: "Email"
+      id:
+        type: "string"
+        description: "ID unique value that identifies the resource generated by the\
+          \ server"
+        x-go-name: "ID"
+      name:
+        type: "string"
+        description: "Name represents human readable name for the resource"
+        x-go-name: "Name"
+      projects:
+        type: "array"
+        description: "Projects holds the list of project the user belongs to\nalong\
+          \ with the group names"
+        items:
+          $ref: "#/definitions/ProjectGroup"
+        x-go-name: "Projects"
+    description: "NewUser represent an API user"
+    example:
+      projects:
+      - id: "id"
+        group: "group"
+      - id: "id"
+        group: "group"
+      creationTimestamp: "2000-01-23T04:56:07.000+00:00"
+      name: "name"
+      id: "id"
+      email: "email"
+      deletionTimestamp: "2000-01-23T04:56:07.000+00:00"
+    x-go-name: "NewUser"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  VSphereCloudSpec:
+    type: "object"
+    properties:
+      infraManagementUser:
+        $ref: "#/definitions/VSphereCredentials"
+      password:
+        type: "string"
+        x-go-name: "Password"
+      username:
+        type: "string"
+        x-go-name: "Username"
+      vmNetName:
+        type: "string"
+        x-go-name: "VMNetName"
+    title: "VSphereCloudSpec specifies access data to VSphere cloud."
+    example:
+      password: "password"
+      vmNetName: "vmNetName"
+      infraManagementUser:
+        password: "password"
+        username: "username"
+      username: "username"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  VSphereCredentials:
+    type: "object"
+    properties:
+      password:
+        type: "string"
+        x-go-name: "Password"
+      username:
+        type: "string"
+        x-go-name: "Username"
+    description: "VSphereCredentials credentials represents a credential for accessing\
+      \ vSphere"
+    example:
+      password: "password"
+      username: "username"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/crd/kubermatic/v1"
+  VSphereDatacenterSpec:
+    type: "object"
+    properties:
+      cluster:
+        type: "string"
+        x-go-name: "Cluster"
+      datacenter:
+        type: "string"
+        x-go-name: "Datacenter"
+      datastore:
+        type: "string"
+        x-go-name: "Datastore"
+      endpoint:
+        type: "string"
+        x-go-name: "Endpoint"
+      templates:
+        $ref: "#/definitions/ImageList"
+    title: "VSphereDatacenterSpec specifies a datacenter of VSphere."
+    example:
+      cluster: "cluster"
+      endpoint: "endpoint"
+      datastore: "datastore"
+      templates: null
+      datacenter: "datacenter"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  VSphereNetwork:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name is the name of the network"
+        x-go-name: "Name"
+    title: "VSphereNetwork is the object representing a vsphere network."
+    example:
+      name: "name"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v1"
+  VSphereNodeSpecV2:
+    type: "object"
+    properties:
+      cpus:
+        type: "integer"
+        format: "int64"
+        x-go-name: "CPUs"
+      memory:
+        type: "integer"
+        format: "int64"
+        x-go-name: "Memory"
+      template:
+        type: "string"
+        x-go-name: "Template"
+      templateNetName:
+        type: "string"
+        x-go-name: "TemplateNetName"
+    description: "VSphereNodeSpec VSphere node settings"
+    example:
+      template: "template"
+      templateNetName: "templateNetName"
+      memory: 1
+      cpus: 6
+    x-go-name: "VSphereNodeSpec"
+    x-go-package: "github.com/kubermatic/kubermatic/api/pkg/api/v2"
+  Version:
+    type: "object"
+    title: "Version represents a single semantic version."
+    x-go-package: "github.com/kubermatic/kubermatic/api/vendor/github.com/Masterminds/semver"
+responses:
+  empty:
+    description: "EmptyResponse is a empty response"
+  errorResponse:
+    description: "ErrorResponse is the default representation of an error"
+    schema:
+      $ref: "#/definitions/ErrorDetails"
