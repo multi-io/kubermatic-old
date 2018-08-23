@@ -1,4 +1,7 @@
 kubermatic:
+  deploy:
+    seedComponents: true
+    masterComponents: true
   docker:
     # the base64 encoded docker authentication token
     secret: ""

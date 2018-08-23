@@ -1,4 +1,3 @@
-{{- if .Values.kubermatic.deploy.seedComponents }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -128,4 +127,3 @@ spec:
           configMap:
             name: clusterns-prometheus-rules
         {{- end }}
-{{- end }}
