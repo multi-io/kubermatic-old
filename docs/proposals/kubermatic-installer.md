@@ -10,10 +10,10 @@ kubermatic-installer should be a go application which allows customers to easily
 ## Motivation and Background
 
 Our current approach to installing kubermatic involves a lot of manual and errorprone manual steps:
-	* Manually provision the nodes
-	* Setting up the values.yaml
-	* Setting up the datacenters.yaml
-	* Helm deploying (order is important as is also which components need to be deployed on which cluster type(seed/master), ...)
+* Manually provision the nodes  
+* Setting up the values.yaml  
+* Setting up the datacenters.yaml  
+* Helm deploying (order is important as is also which components need to be deployed on which cluster type(seed/master), ...)  
 
 The idea is to make the installation way more simple by offering the customer a graphical editor to setup values.yaml/datacenters.yaml configuration and abstract away the provisioning and manual helm deployment.
 
@@ -21,17 +21,17 @@ The idea is to make the installation way more simple by offering the customer a 
 
 The kubermatic installer is one application consisting of these major components:
 
-	* Wizard
-	* Installer
-		* Node Provisioner (should use the machine controller for provisioning)
-		* HA-Kubernetes installer (aka former seed installer)
-		* Helm based installer for e.g. seed/master charts.
-	* Manifest
+* Wizard  
+* Installer  
+	* Node Provisioner (should use the machine controller for provisioning)  
+	* HA-Kubernetes installer (aka former seed installer)  
+	* Helm based installer for e.g. seed/master charts.  
+* Manifest  
 
-The **wizard** is a fancy HTML5 based wizard containing:
-	* A graphical editor used for configuring a manifest file.
-	* A summary page with a "install now" button which executed the installer component with the generated manifest file passed and a "export" button for downloading the generated manifest for offline installations.
-	* A installation progress pane (as in: installer runs, reports this and that output, etc.)
+The **wizard** is a fancy HTML5 based wizard containing:  
+	* A graphical editor used for configuring a manifest file.  
+	* A summary page with a "install now" button which executed the installer component with the generated manifest file passed and a "export" button for downloading the generated manifest for offline installations.  
+	* A installation progress pane (as in: installer runs, reports this and that output, etc.)  
 
 The wizard will be compiled into the kubermatic installer application which then can be used as a webserver serving the wizard.
 
