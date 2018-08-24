@@ -4,7 +4,6 @@
 
 **Status**: designing
 
-*short description of the topic e.g.*
 kubermatic-installer should be a go application which allows customers to easily setup new seed/master clusters.
 
 ## Motivation and Background
