@@ -71,3 +71,4 @@ Therefore the installer should also contain the most recent (as in: time of buil
 * Graphical Editor can set up basic settings
 * Installer can install kubernetes on already provisioned machines
 * Installer can install kubermatic charts from a specified fs path
+* No offline mode: systems which should to be used with kubermatic need internet access.
