@@ -87,6 +87,9 @@ func (r *reconciler) reconcile(ctx context.Context) error {
 	if err := r.reconcileSecrets(ctx); err != nil {
 		return err
 	}
+	if err := r.reconcileDaemonSet(ctx); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -409,6 +412,18 @@ func (r *reconciler) reconcileSecrets(ctx context.Context) error {
 	return nil
 }
 
+func (r *reconciler) reconcileDaemonSet(ctx context.Context) error {
+	dsCreators := []reconciling.NamedDaemonSetCreatorGetter{
+		usersshkeys.DaemonSetCreator(getRegistryDefaultFunc(r.overwriteRegistry)),
+	}
+
+	if err := reconciling.ReconcileDaemonSets(ctx, dsCreators, metav1.NamespaceSystem, r.Client); err != nil {
+		return fmt.Errorf("failed to reconcile the DaemonSet: %v", err)
+	}
+
+	return nil
+}
+
 func (r *reconciler) reconcileNamespaces(ctx context.Context) error {
 
 	if !r.openshift {
@@ -483,4 +498,13 @@ func (r *reconciler) reconcileDeployments(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func getRegistryDefaultFunc(overwriteRegistry string) func(defaultRegistry string) string {
+	return func(defaultRegistry string) string {
+		if overwriteRegistry != "" {
+			return overwriteRegistry
+		}
+		return defaultRegistry
+	}
 }
