@@ -16,6 +16,8 @@ KUBERMATIC_ENV=${KUBERMATIC_ENV} KUBERMATIC_CLUSTER=${KUBERMATIC_CLUSTER} make -
 fi
 : "${DEBUG:="false"}"
 : "${TAG_WORKER:="true"}"
+: "${DYNAMIC_DATACENTERS:="false"}"   # true | false | absent  -- absent meaning pass neither -datacenters= nor -dynamic-datacenters= (2.15+)
+
 SERVICE_ACCOUNT_SIGNING_KEY="$(KUBERMATIC_ENV=${KUBERMATIC_ENV} KUBERMATIC_CLUSTER=${KUBERMATIC_CLUSTER} ${INSTALLER_DIR}/bin/run-vault kv get -field=serviceAccountKey secret/metakube-${KUBERMATIC_ENV}/clusters/dbl1/kubermatic/auth)"
 
 export KEYCLOAK_INTERNAL_URL="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.url -r)"
@@ -29,6 +31,14 @@ if [[ "${TAG_WORKER}" == "false" ]]; then
     WORKER_OPTION=
 else
     WORKER_OPTION="-worker-name=$(tr -cd '[:alnum:]' <<< ${KUBERMATIC_WORKERNAME} | tr '[:upper:]' '[:lower:]')"
+fi
+
+if [[ "${DYNAMIC_DATACENTERS}" == "false" ]]; then
+    DC_OPTION="-datacenters=${CONFIG_DIR}/datacenters.yaml"
+elif [[ "${DYNAMIC_DATACENTERS}" == "true" ]]; then
+    DC_OPTION="-dynamic-datacenters=true"
+else
+    DC_OPTION=
 fi
 
 while true; do
@@ -47,7 +57,7 @@ while true; do
     if [[ "${DEBUG}" == "true" ]]; then
         dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./_build/kubermatic-api -- \
           -kubeconfig=${CONFIG_DIR}/kubeconfig \
-          -datacenters=${CONFIG_DIR}/datacenters.yaml \
+          ${DC_OPTION} \
           -versions=${RESOURCES_DIR}/versions.yaml \
           -updates=${RESOURCES_DIR}/updates.yaml \
           -master-resources=${RESOURCES_DIR} \
@@ -67,7 +77,7 @@ while true; do
     else
         ./_build/kubermatic-api \
           -kubeconfig=${CONFIG_DIR}/kubeconfig \
-          -datacenters=${CONFIG_DIR}/datacenters.yaml \
+          ${DC_OPTION} \
           -versions=${RESOURCES_DIR}/versions.yaml \
           -updates=${RESOURCES_DIR}/updates.yaml \
           -master-resources=${RESOURCES_DIR} \

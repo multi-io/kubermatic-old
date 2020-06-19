@@ -18,6 +18,7 @@ fi
 : "${DEBUG:="false"}"
 : "${KUBERMATICCOMMIT:="$([[ -n "$(git tag --points-at)" ]] && git tag --points-at || git log -1 --format=%H)"}"
 : "${GITTAG:=$(git describe --tags --always)}"
+: "${DYNAMIC_DATACENTERS:="false"}"   # true | false | absent  -- absent meaning pass neither -datacenters= nor -dynamic-datacenters= (2.15+)
 
 # $KUBERMATICCOMMIT and $GITTAG must refer to git tag names for which we've built and uploaded kubermatic images
 # (because those tags will set as image tag for user cluster apiserver pod sidecar containers, e.g. the
@@ -59,6 +60,14 @@ else
     DISABLE_LE_OPTION=
 fi
 
+if [[ "${DYNAMIC_DATACENTERS}" == "false" ]]; then
+    DC_OPTION="-datacenters=${CONFIG_DIR}/datacenters.yaml"
+elif [[ "${DYNAMIC_DATACENTERS}" == "true" ]]; then
+    DC_OPTION="-dynamic-datacenters=true"
+else
+    DC_OPTION=
+fi
+
 # TODO extract hack/sys11-store-container.yaml / hack/sys11-cleanup-container.yaml from the installer
 
 while true; do
@@ -71,7 +80,7 @@ while true; do
     cd ${SRC_DIR}
     if [[ "${DEBUG}" == "true" ]]; then
         dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./_build/seed-controller-manager -- \
-          -datacenters=${CONFIG_DIR}/datacenters.yaml \
+          ${DC_OPTION} \
           -datacenter-name=${KUBERMATIC_CLUSTER} \
           -kubeconfig=$seedKubeconfig \
           -versions=${RESOURCES_DIR}/versions.yaml \
@@ -102,7 +111,7 @@ while true; do
         PID=$!
     else
         ./_build/seed-controller-manager \
-          -datacenters=${CONFIG_DIR}/datacenters.yaml \
+          ${DC_OPTION} \
           -datacenter-name=${KUBERMATIC_CLUSTER} \
           -kubeconfig=$seedKubeconfig \
           -versions=${RESOURCES_DIR}/versions.yaml \
