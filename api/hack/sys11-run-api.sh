@@ -5,7 +5,7 @@ set -o pipefail
 set -x
 
 : "${SRC_DIR:=$(go env GOPATH)/src/github.com/kubermatic/kubermatic/api}"
-: "${KUBERMATIC_WORKERNAME:=${KUBERMATIC_WORKERNAME:-$(uname -n)}}"
+: "${KUBERMATIC_WORKERNAME:=${KUBERMATIC_WORKERNAME:-${USERNAME}}}"
 : "${INSTALLER_DIR:="$(go env GOPATH)/src/gitlab.syseleven.de/kubernetes/kubermatic-installer"}"
 : "${KUBERMATIC_ENV:=dev}"
 : "${KUBERMATIC_CLUSTER:=dbl1}"
