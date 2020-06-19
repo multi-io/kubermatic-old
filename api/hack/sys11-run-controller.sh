@@ -19,6 +19,7 @@ fi
 : "${KUBERMATICCOMMIT:="$([[ -n "$(git tag --points-at)" ]] && git tag --points-at || git log -1 --format=%H)"}"
 : "${GITTAG:=$(git describe --tags --always)}"
 : "${DYNAMIC_DATACENTERS:="false"}"   # true | false | absent  -- absent meaning pass neither -datacenters= nor -dynamic-datacenters= (2.15+)
+: "${IS_KUBERMATIC_UPSTREAM:="false"}"
 
 # $KUBERMATICCOMMIT and $GITTAG must refer to git tag names for which we've built and uploaded kubermatic images
 # (because those tags will set as image tag for user cluster apiserver pod sidecar containers, e.g. the
@@ -26,12 +27,18 @@ fi
 # If they don't, e.g. because you're running with locally committed and not yet pushed changes, you must
 # override those variables, e.g. KUBERMATICCOMMIT=v2.13.1-sys11-12 GITTAG=v2.13.1-sys11-12 ... ./sys11-run-controller.sh
 
-export KEYCLOAK_EXTERNAL_ADMIN_PASSWORD="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.adminPassword -r)"
-export KEYCLOAK_EXTERNAL_ADMIN_USER="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.adminUser -r)"
-export KEYCLOAK_EXTERNAL_URL="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.url -r)"
-export KEYCLOAK_INTERNAL_ADMIN_PASSWORD="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.adminPassword -r)"
-export KEYCLOAK_INTERNAL_ADMIN_USER="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.adminUser -r)"
-export KEYCLOAK_INTERNAL_URL="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.url -r)"
+if [[ "${IS_KUBERMATIC_UPSTREAM}" != "true" ]]; then
+  export KEYCLOAK_EXTERNAL_ADMIN_PASSWORD="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.adminPassword -r)"
+  export KEYCLOAK_EXTERNAL_ADMIN_USER="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.adminUser -r)"
+  export KEYCLOAK_EXTERNAL_URL="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.external.url -r)"
+  export KEYCLOAK_INTERNAL_ADMIN_PASSWORD="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.adminPassword -r)"
+  export KEYCLOAK_INTERNAL_ADMIN_USER="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.adminUser -r)"
+  export KEYCLOAK_INTERNAL_URL="$(cat ${INSTALLER_DIR}/kubermatic/values.yaml | yq .keycloak.internal.url -r)"
+  SYS11_OPTIONS=-keycloak-cache-expiry=2h \
+    -monitoring-environment-label=${KUBERMATIC_ENV}
+else
+  SYS11_OPTIONS=
+fi
 
 dockercfgjson="$(mktemp)"
 trap "rm -f $dockercfgjson" EXIT
@@ -89,9 +96,8 @@ while true; do
           -openshift-addons-path=../openshift_addons \
           -kubernetes-addons-list=$defaultAddons \
           -overwrite-registry= \
-          -keycloak-cache-expiry=2h \
+          ${SYS11_OPTIONS} \
           -feature-gates= \
-          -monitoring-environment-label=${KUBERMATIC_ENV} \
           -monitoring-scrape-annotation-prefix=monitoring.metakube.de \
           -namespace=kubermatic \
           ${WORKER_OPTION} \
@@ -120,9 +126,8 @@ while true; do
           -openshift-addons-path=../openshift_addons \
           -kubernetes-addons-list=$defaultAddons \
           -overwrite-registry= \
-          -keycloak-cache-expiry=2h \
+          ${SYS11_OPTIONS} \
           -feature-gates= \
-          -monitoring-environment-label=${KUBERMATIC_ENV} \
           -monitoring-scrape-annotation-prefix=monitoring.metakube.de \
           -namespace=kubermatic \
           ${WORKER_OPTION} \
