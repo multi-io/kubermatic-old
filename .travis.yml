@@ -1,0 +1,13 @@
+sudo: required
+
+services:
+- docker
+
+language: generic
+
+env:
+  global:
+    secure: Puqj6Lt4bdhyiWR6mffeU38glaaQgfX3Ud4tEeZKgR+g7Q3O1YsVLKF18hmLt86cIg6dQEYO+ZxCKB01Mho0GMbxxIO+A67Cb1RusSmdEHqnaJUFrHp80vqLdEdZ72zUN7wDmfqLbkiJOiBKbk5j8x/zQ5qObA/nprF3EXFyyTZG/qVIVWnPALGKvJcUASLPUenkligVYSMbttXlpryE/GMDQE4zEYw+gpENRpIBex59ZFa6y9C1oAsdRaEzfx8LzXpiLAtGk+vj+x74UJVuugkVEhcvDjierUK+PH9nE0KicfyGZU5c5JvW+et/VUW56oYRz8Ny6gDpNK9zawa+ouZE7TWcIfEZwB+/WwBUZ06mP3OKGGj/S1/ZbE8UEArC7SDmSEPoyWLcsZtL1I/0g1ub4kMImcnCg4JJGO+vAdy6OkpbLn/jO7t3k7a8GF/s+G0ePEFrBeth5YokekuJJa7DzG4LZOm/xJCgtRscdE/oDo2XLzzKJvjFkTIaKKJk/oGYPChV7hgoM0Tx85RloaVh+PSh8AIJ0CmmCiq1NwtWYHCj8XLUYbgh0T/yPmm42v16On7P6jd4xwblYC8rGIgAA/OlWtdGckaXziWHTTE1zy/0THIRxryM4AHINuNeY6oCW3x+1xHWFT0rYkHuK8EOecqFmnBAS+FfNyo2BDk=
+
+script:
+- api/hack/ci/ci-oklischat-build-and-push-all.sh oklischat $(basename "${TRAVIS_BRANCH}")
